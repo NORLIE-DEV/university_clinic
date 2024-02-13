@@ -15,10 +15,6 @@ class SuperAdminController extends Controller
     {
         return view('super_admin.super_admin_index');
     }
-    public function superadmin_student()
-    {
-        return view('super_admin.student');
-    }
 
 
 
@@ -30,13 +26,20 @@ class SuperAdminController extends Controller
 
 
     // STUDENT
+    public function superadmin_student()
+    {
+        return view('super_admin.student');
+    }
 
 
 
 
 
     // EMPLOYEE
-
+    public function superadmin_employee()
+    {
+        return view('super_admin.employee');
+    }
 
 
 

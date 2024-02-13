@@ -7,7 +7,7 @@
             <h1 class="text-xl font-medium text-gray-500 ml-4"><i class="fa-solid fa-user-doctor"></i><span
                     class="ml-2"></span>Update Doctor</h1>
             <a href="/superadmin/doctor"
-                class="dark:bg-blue-900 p-2 text-xs w-24 rounded-md text-center text-white font-semibold">Back</a>
+                class="bg-blue-950 p-2 text-xs w-24 rounded-md text-center text-white font-semibold">Back</a>
         </div>
         <div class="width-full bg-green-500 text-white p-2 mt-3 hidden" id="addsuccess">
             <h5>SUCCESS</h5>
@@ -83,6 +83,11 @@
                         class="p-2 text-xs rounded-md mt-2" style="border: 1px solid gray; width:450px;">
                 </div>
             </div>
+            @error('password')
+            <p class="text-red-500 text-xs p-1">
+                {{$message}}
+            </p>
+            @enderror
             <div class="flex justify-between">
                 <div class="m-2">
                     <label for="gender" class="text-sm">Gender *</label><br>
@@ -137,7 +142,7 @@
                     </option>
                 </select>
             </div>
-            <input type="submit" id="submit" class="m-2 p-3 text-xs font-bold dark:bg-blue-950 rounded-lg text-white"
+            <input type="submit" id="submit" class="m-2 p-3 text-xs font-bold bg-blue-950 rounded-lg text-white"
                 style="width:960px">
         </form>
     </div>

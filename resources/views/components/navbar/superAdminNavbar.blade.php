@@ -1,4 +1,4 @@
-<nav class="bg-white flex justify-between items-center shadow-xl p-5 sticky top-0">
+<nav class="bg-white flex justify-between items-center shadow-xl p-5 sticky top-0 z-10">
     <div class="">
         <h1 class="text-blue-900 font-bold">UNIVERSITY CLINIC MANAGEMENT SYSTEM</h1>
     </div>

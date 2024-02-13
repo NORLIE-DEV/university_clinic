@@ -151,6 +151,7 @@ class SuperAdminController extends Controller
             'image' => "nullable|mimes:jpeg,png,bmp,tiff,svg|max:4096",
         ]);
 
+
         if ($request->hasFile('image')) {
 
             $request->validate([
@@ -176,6 +177,37 @@ class SuperAdminController extends Controller
         }
         $validated['password'] = bcrypt($validated['password']);
         $doctor->update($validated);
-        return redirect('/superadmin/doctor')->with('message', 'Data was successfully updated');
+        return redirect('/superadmin/doctor')->with('updateSuccess', true);
+
+    }
+
+    public function destroy($modelName, $id)
+    {
+        $modelClass = "App\\Models\\" . ucfirst($modelName);
+
+        // Check if the model class exists
+        if (!class_exists($modelClass)) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Model not found!'
+            ], 404);
+        }
+
+        $model = $modelClass::find($id);
+
+        // Check if the model instance exists
+        if (!$model) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Record not found!'
+            ], 404);
+        }
+
+        $model->delete();
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'Deleted successfully!'
+        ]);
     }
 }

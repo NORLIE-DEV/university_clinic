@@ -29,6 +29,7 @@ Route::post('/email_available/doctor', [SuperAdminController::class, 'checkEmail
 Route::post('/store_doctor', [SuperAdminController::class, 'store']);
 Route::get('/updatedoctor/{id}', [SuperAdminController::class, "updatedoctor"]);
 Route::put('/doctor/{doctor}', [SuperAdminController::class, 'update']);
+Route::delete('/delete/{model}/{id}', [SuperAdminController::class, 'destroy']);
 
 
 

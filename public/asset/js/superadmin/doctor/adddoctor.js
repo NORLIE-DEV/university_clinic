@@ -1,4 +1,17 @@
 $(document).ready(function () {
+    $("#password, #password_confirmation").on("keyup", function () {
+        var password = $("#password").val();
+        var confirmPassword = $("#password_confirmation").val();
+        // alert(2);
+        if (password === confirmPassword) {
+            $("#passwordMatch").html("Passwords match").css("color", "green");
+        } else {
+            $("#passwordMatch")
+                .html("Passwords do not match")
+                .css("color", "red");
+        }
+    });
+
     $("#upload").change(function () {
         var reader = new FileReader();
         reader.onload = function (e) {
@@ -23,7 +36,7 @@ $(document).ready(function () {
                 email: email,
             },
             success: function (result) {
-               // alert(result);
+                // alert(result);
                 if (result === "unique") {
                     $("#error_email").html(
                         '<label class="text-xs" style="color:green;">Email Available</label>'
@@ -81,18 +94,10 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                // Handle success response here
-                // alert("success");
-                $("#successModal").show();
-                location.reload();
-
-                clearTextBox();
+                window.location.href = "/superadmin/doctor?success=true";
             },
             error: function (xhr) {
                 var errorMessage = xhr.responseText;
-                // console.log(errorMessage); // Log the error message
-                alert(errorMessage); // Display the error message
-                console.log(errorMessage);
             },
         });
     });

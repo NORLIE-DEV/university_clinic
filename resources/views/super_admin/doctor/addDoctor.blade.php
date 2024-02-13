@@ -4,9 +4,10 @@
     <div class="bg-white h-auto p-3 shadow-xl rounded"
         style="width:1000px; margin: 10px auto; border:1px solid rgb(202, 197, 197);">
         <div class="flex justify-between mt-3">
-            <h1 class="text-xl font-medium text-gray-500 ml-4"><i class="fa-solid fa-user-doctor"></i><span class="ml-2"></span>Add Doctor</h1>
+            <h1 class="text-xl font-medium text-gray-500 ml-4"><i class="fa-solid fa-user-doctor"></i><span
+                    class="ml-2"></span>Add Doctor</h1>
             <a href="/superadmin/doctor"
-                class="dark:bg-blue-900 p-2 text-xs w-24 rounded-md text-center text-white font-semibold">Back</a>
+                class="bg-blue-950 p-2 text-xs w-24 rounded-md text-center text-white font-semibold">Back</a>
         </div>
         <div class="width-full bg-green-500 text-white p-2 mt-3 hidden" id="addsuccess">
             <h5>SUCCESS</h5>
@@ -61,15 +62,20 @@
             <div class="flex justify-between text-sm">
                 <div class="m-2">
                     <label for="password">Password *</label><br>
-                    <input type="password" name="password" placeholder="Password" class="p-2 text-xs rounded-md mt-2"
-                        style="border: 1px solid gray; width:450px;"required>
+                    <input type="password" name="password" placeholder="Password" id="password"
+                        class="p-2 text-xs rounded-md mt-2" style="border: 1px solid gray; width:450px;"required>
+
+
                 </div>
                 <div class="m-2">
                     <label for="password_confirmation">Confirm Password *</label><br>
-                    <input type="password" name="password_confirmation" placeholder="Confirm Password"
-                        class="p-2 text-xs rounded-md mt-2" style="border: 1px solid gray; width:450px;"required>
+                    <input type="password" name="password_confirmation" id="password_confirmation"
+                        placeholder="Confirm Password" class="p-2 text-xs rounded-md mt-2"
+                        style="border: 1px solid gray; width:450px;"required>
+                    <div id="passwordMatch"></div>
                 </div>
             </div>
+
             <div class="flex justify-between">
                 <div class="m-2">
                     <label for="gender" class="text-sm">Gender *</label><br>
@@ -120,10 +126,9 @@
                     <option value="not-active">Not Active</option>
                 </select>
             </div>
-            <input type="submit" id="submit" class="m-2 p-3 text-xs font-bold dark:bg-blue-950 rounded-lg text-white"
+            <input type="submit" id="submit" class="m-2 p-3 text-xs font-bold bg-blue-950 rounded-lg text-white"
                 style="width:960px">
         </form>
     </div>
-
-    <script src="{{asset('asset/js/superadmin/doctor/adddoctor.js')}}"></script>
+    <script src="{{ asset('asset/js/superadmin/doctor/adddoctor.js') }}"></script>
 @endsection

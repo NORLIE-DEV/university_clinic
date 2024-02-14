@@ -62,7 +62,7 @@
                     @endphp
                     <div class="">
                         <img class="m-auto"id="image-preview"
-                            style="width:200px; height:180px;"src="{{ $doctors->image ? asset('storage/doctor/thumbnail/' . $doctors->image) : $default_profile }}">
+                            style="width:200px; height:180px;"src="{{ $doctors->image ? asset('storage/doctor/' . $doctors->image) : $default_profile }}">
                     </div>
                     <div class="m-2">
                         <label for="image" class="text-xs ml-16">Upload Doctor Image</label>
@@ -84,9 +84,9 @@
                 </div>
             </div>
             @error('password')
-            <p class="text-red-500 text-xs p-1">
-                {{$message}}
-            </p>
+                <p class="text-red-500 text-xs p-1">
+                    {{ $message }}
+                </p>
             @enderror
             <div class="flex justify-between">
                 <div class="m-2">
@@ -124,7 +124,8 @@
                 </div>
                 <div class="m-2">
                     <label for="bio" class="text-sm">Bio &#40; Max 1000 characters &#41; *</label><br>
-                    <textarea name="bio" id="bio" cols="30" rows="10" class="border-2 mt-3 text-sm" style="width: 450px;">{{ $doctors->bio }}</textarea>
+                    <textarea name="bio" id="bio" cols="30" rows="10" class="border-2 mt-3 text-sm"
+                        style="width: 450px;">{{ $doctors->bio }}</textarea>
                 </div>
             </div>
             <div class="m-2">

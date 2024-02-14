@@ -25,7 +25,7 @@
                 <label class="px-3 text-xs text-gray-500 uppercase dark:text-gray-400">content</label>
 
                 <a class="flex items-center px-3 py-2  text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
-                    href="#">
+                    href="/superadmin/patient">
                     <i class="fa-solid fa-bed-pulse"></i>
                     <span class="mx-2 text-sm font-medium">Patients</span>
                 </a>

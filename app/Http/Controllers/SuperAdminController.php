@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Doctor;
+use App\Models\Patient;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -20,15 +22,18 @@ class SuperAdminController extends Controller
 
 
     // PATIENT
-
-
-
+    public function superadmin_patient()
+    {
+        $patients = Patient::all();
+        return view('super_admin.patient', compact('patients'));
+    }
 
 
     // STUDENT
     public function superadmin_student()
     {
-        return view('super_admin.student');
+        $students = Student::all();
+        return view('super_admin.student', compact('students'));
     }
 
 
@@ -181,7 +186,6 @@ class SuperAdminController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         $doctor->update($validated);
         return redirect('/superadmin/doctor')->with('updateSuccess', true);
-
     }
 
     public function destroy($modelName, $id)

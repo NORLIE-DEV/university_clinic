@@ -35,7 +35,7 @@ class StudentImportClass implements ToCollection
             }
 
             $student = new Student([
-                'student_id' => $row[0],
+                'id' => $row[0],
                 'first_name' => $row[1],
                 'middle_name' => $row[2],
                 'last_name' => $row[3],

@@ -28,6 +28,9 @@ Route::get('/superadmin/student',[SuperAdminController::class, 'superadmin_stude
 
 Route::get('/superadmin/employee',[SuperAdminController::class, 'superadmin_employee']);
 
+Route::get('/superadmin/patient',[SuperAdminController::class, 'superadmin_patient']);
+
+
 Route::get('/superadmin/doctor',[SuperAdminController::class, 'superadmin_doctor']);
 Route::get('/superadmin/doctor/createDoctor',[SuperAdminController::class, 'add_doctor']);
 Route::post('/email_available/doctor', [SuperAdminController::class, 'checkEmail']);

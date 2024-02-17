@@ -5,10 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Student;
+use App\Models\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
+use Illuminate\Support\Facades\Session;
 
 
 class SuperAdminController extends Controller
@@ -24,8 +26,61 @@ class SuperAdminController extends Controller
     // PATIENT
     public function superadmin_patient()
     {
+        return view('super_admin.patient');
+    }
+
+    public function student_patient()
+    {
         $patients = Patient::all();
-        return view('super_admin.patient', compact('patients'));
+        return view('super_admin.patient.student_patient', compact('patients'));
+    }
+
+    public function employee_patient()
+    {
+        $patients = Patient::all();
+        return view('super_admin.patient.employee_patient', compact('patients'));
+    }
+    public function importData(Request $request)
+    {
+
+        $students = Student::all();
+        $employees = Employee::all();
+
+        $duplicateEntries = [];
+
+
+        foreach ($students as $student) {
+
+            if (!Patient::where('student_id', $student->id)->exists()) {
+                $patient = new Patient();
+                $patient->student_id = $student->id;
+
+                $patient->save();
+            } else {
+                $duplicateEntries[] = "Duplicate entry found for student ID: $student->id";
+            }
+        }
+
+
+        foreach ($employees as $employee) {
+
+            if (!Patient::where('employee_id', $employee->id)->exists()) {
+                $patient = new Patient();
+                $patient->employee_id = $employee->id;
+
+                $patient->save();
+            } else {
+                $duplicateEntries[] = "Duplicate entry found for employee ID: $employee->id";
+            }
+        }
+
+
+        if (!empty($duplicateEntries)) {
+            Session::flash('duplicateEntries', $duplicateEntries);
+        }
+
+
+        return redirect()->back()->with('success', 'Data imported successfully.');
     }
 
 
@@ -43,7 +98,8 @@ class SuperAdminController extends Controller
     // EMPLOYEE
     public function superadmin_employee()
     {
-        return view('super_admin.employee');
+        $employees = Employee::all();
+        return view('super_admin.employee', compact('employees'));
     }
 
 

@@ -72,7 +72,7 @@
                         <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-300">
                             <th scope="row"
                                 class=" border dark:border-neutral-600 border-gray-300 font-extralight text-center text-xs">
-                                {!! $student->id !!}
+                                {{ $student->id }}
                             </th>
 
 
@@ -102,9 +102,9 @@
                             </th>
                             <th
                                 scope="row"class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight
-                                                                                                                                                                                @if ($student->status === 'active' || $student->status === 'Active') bg-green-500
+                                                                                                                                                                                    @if ($student->status === 'active' || $student->status === 'Active') bg-green-500
                                         @else bg-red-500 @endif
-                                                                                                                                                                                text-center text-white">
+                                                                                                                                                                                    text-center text-white">
                                 {{ $student->status }}
                             </th>
 

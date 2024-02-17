@@ -14,25 +14,27 @@ class StudentImportClass implements ToCollection
     public function collection(Collection $rows)
     {
         foreach ($rows as $row) {
-
             if (!isset($row[0]) || $row[0] === '') {
                 continue;
             }
 
+            $existingStudent = Student::where('id', $row[0])->first();
 
+            if ($existingStudent) {
+                continue;
+            }
+
+            $birthdate = null;
             $excelDate = $row[6];
             if (is_numeric($excelDate)) {
                 $birthdate = \PhpOffice\PhpSpreadsheet\Shared\Date::excelToDateTimeObject($excelDate)->format('Y-m-d');
-            } else {
-
-                $birthdate = null;
             }
 
 
             if ($birthdate === null) {
-
                 continue;
             }
+
 
             $student = new Student([
                 'id' => $row[0],
@@ -57,7 +59,7 @@ class StudentImportClass implements ToCollection
                 'emergency_contact_address' => $row[19],
             ]);
 
-            // Save the patient to the database
+            
             $student->save();
         }
     }

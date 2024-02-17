@@ -19,6 +19,11 @@ class EmployeeImportClass implements ToCollection
                 continue;
             }
 
+            $existingStudent = Employee::where('id', $row[0])->first();
+
+            if ($existingStudent) {
+                continue;
+            }
 
             $excelDate = $row[6];
             if (is_numeric($excelDate)) {

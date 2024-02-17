@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('patients', function (Blueprint $table) {
             $table->string('id')->unique()->nullable();
-            $table->string('student_id', 50)->nullable();
-            $table->string('employee_id', 50)->nullable();
-            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade'); // Corrected foreign key constraint
-            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade'); // Corrected foreign key constraint
+            $table->string('student_id', 50)->nullable()->unique();
+            $table->string('employee_id', 50)->nullable()->unique();
+
+            // Foreign key constraints
+            $table->foreign('student_id')->references('id')->on('students')->onDelete('cascade');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

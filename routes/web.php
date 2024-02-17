@@ -22,17 +22,20 @@ Route::get('/', function () {
 });
 
 ///////////////////////////// SUPERADMIN  ///////////////////////////////
-Route::get('/superadmin',[SuperAdminController::class, 'superadmin_index']);
+Route::get('/superadmin', [SuperAdminController::class, 'superadmin_index']);
 
-Route::get('/superadmin/student',[SuperAdminController::class, 'superadmin_student']);
+Route::get('/superadmin/student', [SuperAdminController::class, 'superadmin_student']);
 
-Route::get('/superadmin/employee',[SuperAdminController::class, 'superadmin_employee']);
+Route::get('/superadmin/employee', [SuperAdminController::class, 'superadmin_employee']);
 
-Route::get('/superadmin/patient',[SuperAdminController::class, 'superadmin_patient']);
+Route::get('/superadmin/patient', [SuperAdminController::class, 'superadmin_patient']);
+Route::get('/superadmin/patient/student', [SuperAdminController::class, 'student_patient']);
+Route::get('/superadmin/patient/employee', [SuperAdminController::class, 'employee_patient']);
+Route::post('/superadmin/patient_import_data', [SuperAdminController::class, 'importData']);
 
 
-Route::get('/superadmin/doctor',[SuperAdminController::class, 'superadmin_doctor']);
-Route::get('/superadmin/doctor/createDoctor',[SuperAdminController::class, 'add_doctor']);
+Route::get('/superadmin/doctor', [SuperAdminController::class, 'superadmin_doctor']);
+Route::get('/superadmin/doctor/createDoctor', [SuperAdminController::class, 'add_doctor']);
 Route::post('/email_available/doctor', [SuperAdminController::class, 'checkEmail']);
 Route::post('/store_doctor', [SuperAdminController::class, 'store']);
 Route::get('/updatedoctor/{id}', [SuperAdminController::class, "updatedoctor"]);
@@ -46,6 +49,4 @@ Route::post('/import-excel/employee', [ExcelImportController::class, 'import_emp
 
 
 ///////////////////////////// PATIENT //////////////////////////////////'
-Route::get('/patient_index',[PatientController::class, 'patient_index']);
-
-
+Route::get('/patient_index', [PatientController::class, 'patient_index']);

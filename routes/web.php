@@ -1,9 +1,11 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\ExcelImportController;
+use App\Http\Controllers\PatientLoginController;
 
 
 /*
@@ -21,10 +23,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+
+// Patient Login
+Route::get('/patient_login', [AuthController::class, 'patient_login']);
+
 ///////////////////////////// SUPERADMIN  ///////////////////////////////
 Route::get('/superadmin', [SuperAdminController::class, 'superadmin_index']);
 
 Route::get('/superadmin/student', [SuperAdminController::class, 'superadmin_student']);
+Route::get('/superadmin/addstudent', [SuperAdminController::class, 'addStudent']);
+Route::post('/studentID_available/student', [SuperAdminController::class, 'checkStudentID']);
+Route::post('/email_available/student', [SuperAdminController::class, 'StudentcheckEmail']);
+Route::post('/store_student', [SuperAdminController::class, 'store_student']);
 
 Route::get('/superadmin/employee', [SuperAdminController::class, 'superadmin_employee']);
 

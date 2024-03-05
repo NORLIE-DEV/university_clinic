@@ -26,7 +26,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('student_department', 50);
             $table->string('student_level', 50);
-            $table->string('course', 50);
+            $table->string('course', 50)->nullable();;
             $table->string('school_year_enrolled', 50);
             $table->string('status', 10);
             $table->string('emergency_contact_name', 20);

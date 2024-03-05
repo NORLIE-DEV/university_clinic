@@ -10,15 +10,14 @@
             </ul>
         </div>
     @endif --}}
-    <div class="flex items-center justify-between mr-10" style="">
-        <h1 class="p-2 mt-5 ml-2 text-xl font-bold">Patient List</h1>
-        <div>
-            <a href="/addpatient" class="bg-green-500 rounded p-2 text-xs shadow font-mono text-white mr-5">Add Patient</a>
-        </div>
+    <div class="w-full h-auto bg-blue-950 p-4 items-center">
+        <h1 class="text-white font-bold">STUDENT PATIENT</h1>
     </div>
-
     <!-- Table responsive wrapper -->
-    <div class="overflow-x-auto bg-white m-4 rounded-md mb-10 text-xs">
+    <div class="overflow-x-auto bg-white shadow-xl p-5 m-4 rounded-md mb-10 text-xs">
+        <div class="p-4">
+            <h1 class="font-bold text-xl text-gray-400"><i class="fa-solid fa-hospital-user"></i><span class="ml-1"></span>STUDENT PATIENT LIST</h1>
+        </div>
         <!-- Table -->
         <div class="">
             <table id="studentPatientTable" class="w-full text-left text-xs whitespace-nowrap p-2 border-collapse">
@@ -74,30 +73,22 @@
 
 
                                 <th scope="row"class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight
-                                                                        @if ($patient->student->status === 'active' || $patient->student->status === 'Active') bg-green-500
+                                                                            @if ($patient->student->status === 'active' || $patient->student->status === 'Active') bg-green-500
                                     @else bg-red-500 @endif
-                                                                        text-center text-white">
+                                                                            text-center text-white">
                                     {{ $patient->student->status }}
                                 </th>
 
 
                                 <th scope="row"
-                                    class="px-2 py-2 border dark:border-neutral-600 border-gray-300 text-center">
-                                    <a href="/updatedoctor/{{ $patient->student->student_id }}" id="update-doctor">
-                                        <button
-                                            class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"><i
-                                                class="fa-solid fa-pen-to-square"></i></button></a>
+                                    class="px-2 py-2 border dark:border-neutral-600 border-gray-300 text-right">
                                     <button
-                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"
-                                        id="delete_doctor" value="{{ $patient->student->student_id }}"><i
-                                            class="fa-solid fa-trash"></i></button>
-                                    <button
-                                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 rounded text-xs"><i
+                                        class="bg-blue-950 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded text-xs"><i
                                             class="fa-solid fa-users-viewfinder"></i></button>
                                 </th>
                             </tr>
                         @elseif ($key !== count($patients) - 1)
-                            <p>No associated student</p>
+                            {{-- <p>No associated student</p> --}}
                         @endif
                     @endforeach
                 </tbody>

@@ -78,14 +78,14 @@
                                     <a href="/updatedoctor/{{ $doctor->id }}" id="update-doctor">
                                         <button
                                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"><i
-                                                class="fa-solid fa-pen-to-square"></i>Edit</button></a>
+                                                class="fa-solid fa-pen-to-square"></i></button></a>
                                     <button
                                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"
                                         id="delete_doctor" value="{{ $doctor->id }}"><i
-                                            class="fa-solid fa-trash"></i>Delete</button>
+                                            class="fa-solid fa-trash"></i></button>
                                     <button
                                         class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 rounded text-xs"><i
-                                            class="fa-solid fa-users-viewfinder"></i>View</button>
+                                            class="fa-solid fa-users-viewfinder"></i></button>
                                 </th>
                             </tr>
                         @empty

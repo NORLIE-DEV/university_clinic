@@ -21,8 +21,6 @@ class SuperAdminController extends Controller
     }
 
 
-
-
     // PATIENT
     public function superadmin_patient()
     {
@@ -91,9 +89,103 @@ class SuperAdminController extends Controller
         return view('super_admin.student', compact('students'));
     }
 
+    public function addStudent()
+    {
+        return view('super_admin.student.addStudent');
+    }
 
+    public function store_student(Request $request)
+    {
+        $validated = $request->validate([
+            'id' => ["required", Rule::unique('students', 'id')],
+            'first_name' => "required",
+            'middle_name' => "required",
+            'last_name' => "required",
+            'gender' => "required",
+            'civil_status' => "required",
+            'date_of_birth' => 'required|date',
+            'birth_place' => "required",
+            'permanent_address' => "required",
+            'contact_number' => "required",
+            "email" => ['required', 'email', Rule::unique('students', 'email')],
+            'password' => 'required|confirmed', // 'password_confirmation' field must match 'password'
+            'student_department' => "required",
+            'student_level' => "required",
+            'course' => "nullable",
+            'school_year_enrolled' => "required",
+            'emergency_contact_name' => "required",
+            'emergency_contact_number' => "required",
+            'emergency_contact_address' => "required",
+            'status' => "required",
+            'image' => "nullable",
+        ]);
+        if ($request->hasFile('image')) {
 
+            $request->validate([
+                "image" => 'mimes:jpeg,png,bmp,tiff,svg |max:4096'
+            ]);
 
+            $filenameWithExtension = $request->file("image");
+
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+
+            $extension = $request->file("image")->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
+            $smallThumbnail = $filename . '_' . time() . '.' . $extension;
+
+            $request->file('image')->storeAs('public/student', $filenameToStore);
+            $request->file('image')->storeAs('public/student/thumbnail', $smallThumbnail);
+
+            $thumbNail = 'storage/student/thumbnail/' . $smallThumbnail;
+
+            $this->createThumbnail($thumbNail, 150, 93);
+
+            $validated['image'] = $filenameToStore;
+        }
+        //dd($validated);
+        // dd($request->all());
+        $validated['password'] = bcrypt($validated['password']);
+        Student::create($validated);
+        return response()->json(['message' => 'Registration successful'], 200);
+    }
+    function checkStudentID(Request $request)
+    {
+        if ($request->has('student_id')) {
+            $student_id = $request->input('student_id');
+
+            // Check in the 'users' table
+            $countStudents = DB::table('students')
+                ->where('id', $student_id)
+                ->count();
+
+            // If the student_id exists in either table, consider it not unique
+            if ($countStudents > 0) {
+                echo 'not_unique';
+            } else {
+                echo 'unique';
+            }
+        }
+    }
+
+    //check student email
+    function checkEmail(Request $request)
+    {
+        if ($request->has('email')) {
+            $email = $request->input('email');
+
+            // Check in the 'users' table
+            $countDoctors = DB::table('doctors')
+                ->where('email', $email)
+                ->count();
+
+            // If the student_id exists in either table, consider it not unique
+            if ($countDoctors > 0) {
+                echo 'not_unique';
+            } else {
+                echo 'unique';
+            }
+        }
+    }
 
     // EMPLOYEE
     public function superadmin_employee()
@@ -171,18 +263,18 @@ class SuperAdminController extends Controller
         $img->save($path);
     }
 
-    function checkEmail(Request $request)
+    function StudentcheckEmail(Request $request)
     {
         if ($request->has('email')) {
             $email = $request->input('email');
 
             // Check in the 'users' table
-            $countDoctors = DB::table('doctors')
+            $countStudents = DB::table('students')
                 ->where('email', $email)
                 ->count();
 
             // If the student_id exists in either table, consider it not unique
-            if ($countDoctors > 0) {
+            if ($countStudents > 0) {
                 echo 'not_unique';
             } else {
                 echo 'unique';

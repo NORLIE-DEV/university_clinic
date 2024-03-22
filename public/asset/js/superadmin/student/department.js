@@ -1,5 +1,5 @@
 $(document).ready(function () {
-    
+
     var departmentDropdown = $("#student_department");
     var courseDropdown = $("#course");
     var studentlevelDropdown = $("#student_level");
@@ -113,9 +113,9 @@ $(document).ready(function () {
             );
         });
     }
-    var departmentValue = "{{ $patients->student_department }}";
-    var studentLevelValue = "{{ $patients->student_level }}";
-    var courseValue = "{{ $patients->course }}";
+    var departmentValue = "{{ $students->student_department}}";
+    var studentLevelValue = "{{ $students->student_level}}";
+    var courseValue = "{{ $students->course}}";
 
     // Set selected values to dropdowns
     departmentDropdown.val(departmentValue).trigger("change");

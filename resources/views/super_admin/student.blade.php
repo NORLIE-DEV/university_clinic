@@ -104,21 +104,20 @@
                             </th>
                             <th
                                 scope="row"class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight
-                                                                                                                                                                                                @if ($student->status === 'active' || $student->status === 'Active') bg-green-500
+                                                                                                                                                                                                        @if ($student->status === 'active' || $student->status === 'Active') bg-green-500
                                         @else bg-red-500 @endif
-                                                                                                                                                                                                text-center text-white">
+                                                                                                                                                                                                        text-center text-white">
                                 {{ $student->status }}
                             </th>
 
-
                             <th scope="row" class="px-2 py-2 border dark:border-neutral-600 border-gray-300 text-center">
-                                <a href="/updatedoctor/{{ $student->id }}" id="update-doctor">
+                                <a href="/update_student/{{ $student->id }}" id="update-student">
                                     <button
                                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"><i
                                             class="fa-solid fa-pen-to-square"></i></button></a>
                                 <button
                                     class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"
-                                    id="delete_doctor" value="{{ $student->id }}"><i
+                                    id="delete_student" value="{{ $student->id }}"><i
                                         class="fa-solid fa-trash"></i></button>
 
                             </th>
@@ -159,11 +158,14 @@
             </div>
         </div>
     </div>
+
+    @include('super_admin.student.modal.delete_student')
     <script>
         $(document).ready(function() {
             $('#studentTable').DataTable();
 
             showSuccessModal();
+
             function showSuccessModal() {
                 try {
                     var urlParams = new URLSearchParams(window.location.search);
@@ -179,6 +181,44 @@
                     console.error('Error in showSuccessModal:', error);
                 }
             }
+
+            //delete
+            $(document).on("click", "#delete_student", function(e) {
+                e.preventDefault();
+                const student_id = $(this).val();
+                $("#delete_id").val(student_id);
+                $("#deleteModal").removeClass('hidden');
+            });
+
+
+            $("#delete_overlay1, #deleteModalClose1, #cancelDeletemeModal").click(function() {
+                $("#deleteModal").addClass('hidden');
+            });
+
+
+            showSuccessModal();
+
+            function showSuccessModal() {
+                try {
+                    var urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.has('success') && urlParams.get('success') === 'true') {
+                        $("#addSuccess").show();
+                        setTimeout(function() {
+                            $("#addSuccess").hide();
+                            var newUrl = window.location.href.split('?')[0];
+                            history.replaceState(null, null, newUrl);
+                        }, 4000);
+                    }
+                } catch (error) {
+                    console.error('Error in showSuccessModal:', error);
+                }
+            }
+
+            $("#close_successModalMessage").click(function() {
+                $("#addSuccess").hide();
+                var newUrl = window.location.href.split('?')[0];
+                history.replaceState(null, null, newUrl);
+            });
         })
     </script>
 @endsection

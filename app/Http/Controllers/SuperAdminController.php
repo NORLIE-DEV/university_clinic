@@ -148,6 +148,70 @@ class SuperAdminController extends Controller
         Student::create($validated);
         return response()->json(['message' => 'Registration successful'], 200);
     }
+
+    public function edit_Student($id)
+    {
+        $students = Student::findOrFail($id);
+        return view('super_admin.student.updateStudent', ["students" => $students]);
+    }
+
+    public function update_student(Request $request, Student $student)
+    {
+        // dd($request);
+        $validated = $request->validate([
+            // 'id' => ["required", Rule::unique('students', 'id')],
+            'first_name' => "required",
+            'middle_name' => "required",
+            'last_name' => "required",
+            'gender' => "required",
+            'civil_status' => "required",
+            'date_of_birth' => 'required|date',
+            'birth_place' => "required",
+            'permanent_address' => "required",
+            'contact_number' => "required",
+            // "email" => ['required', 'email', Rule::unique('students', 'email')],
+            'password' => 'nullable|confirmed', // 'password_confirmation' field must match 'password'
+            'student_department' => "required",
+            'student_level' => "required",
+            'course' => "nullable",
+            'school_year_enrolled' => "required",
+            'emergency_contact_name' => "required",
+            'emergency_contact_number' => "required",
+            'emergency_contact_address' => "required",
+            'status' => "required",
+            'image' => "nullable",
+        ]);
+        //  dd($validated);
+        // dd($request);
+        if ($request->hasFile('image')) {
+
+            $request->validate([
+                "image" => 'mimes:jpeg,png,bmp,tiff,svg |max:4096'
+            ]);
+
+            $filenameWithExtension = $request->file("image");
+
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+
+            $extension = $request->file("image")->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
+            $smallThumbnail = $filename . '_' . time() . '.' . $extension;
+
+            $request->file('image')->storeAs('public/student', $filenameToStore);
+            $request->file('image')->storeAs('public/student/thumbnail', $smallThumbnail);
+
+            $thumbNail = 'storage/student/thumbnail/' . $smallThumbnail;
+
+            $this->createThumbnail($thumbNail, 150, 93);
+
+            $validated['image'] = $filenameToStore;
+        }
+
+
+        $validated['password'] = bcrypt($validated['password']);
+        $student->update($validated);
+        return redirect('/superadmin/student')->with('updateSuccess', true);
+    }
     function checkStudentID(Request $request)
     {
         if ($request->has('student_id')) {

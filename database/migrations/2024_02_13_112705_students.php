@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('middle_name', 25);
             $table->string('last_name', 25);
             $table->string('gender', 6);
-            $table->string('civil_status', 6);
+            $table->string('civil_status', 15);
             $table->date('date_of_birth');
             $table->string('birth_place', 100);
             $table->string('permanent_address', 100);

@@ -36,16 +36,16 @@
         $(document).on("click", '#delete', function(e) {
             e.preventDefault();
 
-            var doctor_id = $('#delete_id').val();
+            var supplier_id = $('#delete_id').val();
             $.ajaxSetup({
                 headers: {
                     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
                 },
             });
-            var modelName = 'Doctor';
+            var modelName = 'Medicine';
             $.ajax({
                 type: "DELETE",
-                url: "/delete/" + modelName + "/" + doctor_id,
+                url: "/delete/" + modelName + "/" + supplier_id,
                 success: function(response) {
                     //alert(response.data.message);
                     setTimeout(function() {

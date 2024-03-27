@@ -28,12 +28,14 @@
             <table id="tableMedicineStock" class="">
                 <thead class="uppercase tracking-wider p-2  text-xs ">
                     <tr>
-
                         <th scope="col" class="  text-center">
                             NAME
                         </th>
                         <th scope="col" class="  text-center">
                             MEDICINE TYPES
+                        </th>
+                        <th scope="col" class="  text-center">
+                            BATCH ID
                         </th>
                         <th scope="col" class="  text-center">
                             DOSAGE
@@ -64,7 +66,11 @@
                             </th>
                             <th scope="row"
                                 class="px-2 py-2 border-t border-b dark:border-neutral-600 border-gray-300 font-extralight text-left">
-                                {{ $medicine_stock->medicine->medicine_types }}
+                                {{ $medicine_stock->medicine->medicine_types}}
+                            </th>
+                            <th scope="row"
+                                class="px-2 py-2 border-t border-b dark:border-neutral-600 border-gray-300 font-extralight text-left">
+                                {{ $medicine_stock->batch_id }}
                             </th>
                             <th scope="row"
                                 class="px-2 py-2 border-t border-b dark:border-neutral-600 border-gray-300 font-extralight text-left">
@@ -88,14 +94,14 @@
                             </th>
                             <th scope="row"
                                 class="px-2 py-2 border-t border-b dark:border-neutral-600 border-gray-300 text-left">
-                                <a href="/updatemedicine/{{ $medicine_stock->id }}" id="update-doctor">
+                                <a href="/updatemedicineStocks/{{ $medicine_stock->id }}" id="update-doctor">
                                     <button
                                         class="bg-green-500 hover:bg-green700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"><i
                                             class="fa-solid fa-pen-to-square"></i></button>
                                 </a>
                                 <button
                                     class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"
-                                    id="delete_medicine" value="{{ $medicine_stock->id }}"><i
+                                    id="delete_medicinestock" value="{{ $medicine_stock->id }}"><i
                                         class="fa-solid fa-trash"></i></button>
                             </th>
                         </tr>
@@ -111,14 +117,14 @@
             </table>
         </div>
     </div>
-    @include('admin.inventory.medicine.modal.delete')
+    @include('admin.inventory.medicine_stock.modal.delete')
     <script>
         $(document).ready(function() {
             $("#tableMedicineStock").DataTable();
 
             showSuccessModal();
             updateSuccess();
-            deleteSupplier();
+            deleteMedicineStock();
 
             function showSuccessModal() {
                 try {
@@ -148,11 +154,11 @@
                 }
             }
 
-            function deleteSupplier() {
-                $(document).on("click", "#delete_medicine", function(e) {
+            function deleteMedicineStock() {
+                $(document).on("click", "#delete_medicinestock", function(e) {
                     e.preventDefault();
-                    const supplier_id = $(this).val();
-                    $("#delete_id").val(supplier_id);
+                    const medicinestock_id = $(this).val();
+                    $("#delete_id").val(medicinestock_id);
                     $("#deleteModal").removeClass('hidden');
                 });
 

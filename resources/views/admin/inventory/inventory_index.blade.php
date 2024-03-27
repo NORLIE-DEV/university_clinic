@@ -49,7 +49,7 @@
                         </div>
                     </div>
                     <div class="flex justify-center items-center ">
-                        <h1 class="mt-10 text-5xl font-bold text-blue-950">1</h1>
+                        <h1 class="mt-10 text-5xl font-bold text-blue-950">{{$medicinestocksCounts}}</h1>
                     </div>
                 </div>
             </a>

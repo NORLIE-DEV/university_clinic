@@ -29,19 +29,11 @@
                     <i class="fa-solid fa-boxes-stacked"></i>
                     <span class="mx-2 text-sm font-medium">Inventory</span>
                 </a>
-
                 <a class="flex items-center px-3 py-2  text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
-                    href="/superadmin/student">
-                    <i class="fa-solid fa-graduation-cap"></i>
+                    href="/admin_patient_index">
+                    <i class="fa-solid fa-bed"></i>
 
-                    <span class="mx-2 text-sm font-medium">Students</span>
-                </a>
-
-                <a class="flex items-center px-3 py-2  text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
-                    href="/superadmin/employee">
-                    <i class="fa-solid fa-address-card"></i>
-
-                    <span class="mx-2 text-sm font-medium">Employee</span>
+                    <span class="mx-2 text-sm font-medium">Patient</span>
                 </a>
                 <a class="flex items-center px-3 py-2  text-white transition-colors duration-300 transform rounded-lg dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 dark:hover:text-gray-200 hover:text-gray-700"
                     href="/superadmin/doctor">

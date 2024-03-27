@@ -54,7 +54,7 @@
                     <select type="text" name="medicine_types" id="medicine_types"
                         class="border border-gray-500 p-2 text-sm rounded-md outline-none" style="width: 90%">
                         <option value="liquid">Liquid</option>
-                        <option value="table">Tablet</option>
+                        <option value="tablet">Tablet</option>
                         <option value="capsule">Capsule</option>
                     </select>
                 </div>

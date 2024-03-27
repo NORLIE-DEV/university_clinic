@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\Medicine;
-use App\Models\MedicineStock;
+
 use Illuminate\Http\Request;
+use App\Models\Medicinestock;
 
 class MedicineStockController extends Controller
 {
     public function medicine_stock_index(Request $request)
     {
         // Retrieve all medicines from the database
-        $medicine_stocks = MedicineStock::all();
+        $medicine_stocks = Medicinestock::all();
         return view('admin.inventory.medicine_stock.medicine_stock', compact('medicine_stocks'));
     }
 
@@ -35,23 +36,32 @@ class MedicineStockController extends Controller
             'expiration_date' => 'required',
             'quantity' => 'required',
         ]);
-        $medicineStock = new MedicineStock();
+        $medicineStock = new Medicinestock();
         $medicineStock->fill($validated);
         $medicineStock->save();
         return response()->json(['message' => 'Registration successful'], 200);
     }
 
-    public function update_medicineStocks(Request $request, MedicineStock $medicineStock)
+    public function edit_medicineStock($id)
+    {
+        $medicinesStocks = Medicinestock::findOrFail($id);
+        return view('admin.inventory.medicine_stock.editMedicineStocks', ["medicinesStocks" => $medicinesStocks]);
+    }
+
+
+    public function update_medicineStocks(Request $request, $id)
     {
         $validated = $request->validate([
-            'name' => "required",
-            'generic_name' => "required",
-            'dosage' => "required",
-            'medicine_types' => "required",
-            'supplier_id' => "required", // Ensure the request includes supplier_id
-            'description' => "required",
+            'medicine_id' => 'required',
+            'batch_id' => 'required',
+            'date_recieve' => 'required',
+            'expiration_date' => 'required',
+            'quantity' => 'required',
         ]);
+        //dd($medicineStock);
+        $medicineStock = Medicinestock::findOrFail($id);
         $medicineStock->update($validated);
-        return redirect()->route('admin.medicine')->with('success', true);
+
+        return redirect()->route('admin.medicine_stock')->with('success', true);
     }
 }

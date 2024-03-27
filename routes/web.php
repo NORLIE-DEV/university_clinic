@@ -8,6 +8,7 @@ use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\NurseAdminController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\ExcelImportController;
+use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\PatientLoginController;
 use App\Http\Controllers\MedicineStockController;
 
@@ -90,5 +91,14 @@ Route::get('/admin/medicine_stocks', [MedicineStockController::class, 'medicine_
 Route::get('/admin/add_medicine_stocks', [MedicineStockController::class, 'add_medicine_stock']);
 Route::get('/getmedicine', [MedicineStockController::class, 'getMedicine'])->name('getMedicine');
 Route::post('/store_medicine_stock', [MedicineStockController::class, 'store_medicineStocks']);
+Route::get('/updatemedicineStocks/{id}', [MedicineStockController::class, "edit_medicineStock"]);
+Route::put('/medicineStocks/{medicineStocks}', [MedicineStockController::class, 'update_medicineStocks']);
+
+Route::get('/admin_patient_index', [AdminPatientController::class, 'adminPatientIndex']);
+Route::get('/admin/patient/student', [AdminPatientController::class, 'student_patient']);
+Route::get('/admin_patient_info/{id}', [AdminPatientController::class, "patient_info"]);
+Route::get('/admin_patient_medicalHistory_info/{id}', [AdminPatientController::class, "patient_medicalHistory"]);
+
+Route::post('/add_medicalhistory', [AdminPatientController::class, 'add_medicalhistory']);
 //
 

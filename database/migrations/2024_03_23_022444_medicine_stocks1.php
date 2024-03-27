@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('medicine_stocks', function (Blueprint $table) {
+        Schema::create('medicinestocks', function (Blueprint $table) {
             $table->string('id')->unique()->nullable();
             $table->uuid('medicine_id')->nullable(); // Change to UUID data type
             $table->foreign('medicine_id')->references('id')->on('medicines')->onDelete('cascade'); // Reference custom UUID primary key

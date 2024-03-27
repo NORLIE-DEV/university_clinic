@@ -24,6 +24,10 @@ class Patient extends Model
         return $this->belongsTo(Student::class, 'student_id');
     }
 
+    public function medicalHistory()
+    {
+        return $this->hasMany(MedicalHistory::class);
+    }
     public static function boot()
     {
         parent::boot();

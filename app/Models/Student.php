@@ -4,8 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 
-class Student extends Model
+class Student extends Authenticatable
 {
     use HasFactory;
 
@@ -30,6 +32,7 @@ class Student extends Model
         'emergency_contact_name',
         'emergency_contact_number',
         'emergency_contact_address',
+        'type',
         'image',
     ];
 }

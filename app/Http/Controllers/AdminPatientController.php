@@ -46,6 +46,7 @@ class AdminPatientController extends Controller
 
     public function add_medicalhistory(Request $request)
     {
+
         // Validate the incoming request
         $validated = $request->validate([
             'patient_id' => 'required',
@@ -64,8 +65,10 @@ class AdminPatientController extends Controller
             'food_allergy' => 'nullable',
             'medicine_allergy' => 'nullable',
             'other_allergy' => 'nullable',
-            'illness' => 'nullable|array',
+            'illness' => 'nullable',
+            'other_illness' => 'nullable',
         ]);
+
 
         $medicalHistory = new Medicalhistory();
         $medicalHistory->fill($validated);
@@ -73,5 +76,29 @@ class AdminPatientController extends Controller
         $medicalHistory->save();
 
         return response()->json(['message' => 'Medical history added successfully', 'data' => $medicalHistory], 200);
+    }
+
+    public function update_medicalhistory(Request $request, $id)
+    {
+        $medicalHistory = Medicalhistory::findOrFail($id);
+        $validated = $request->validate([
+            'food_allergy' => 'nullable',
+            'medicine_allergy' => 'nullable',
+            'other_allergy' => 'nullable',
+            'illness' => 'nullable',
+            'other_illness' => 'nullable',
+        ]);
+        $medicalHistory->fill($validated);
+
+        if (array_key_exists('illness', $validated)) {
+
+            $medicalHistory->illness = json_encode($validated['illness']);
+        } else {
+
+            $medicalHistory->illness = null;
+        }
+        $medicalHistory->save();
+
+        return response()->json(['message' => 'Medical history updated successfully', 'data' => $medicalHistory], 200);
     }
 }

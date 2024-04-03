@@ -40,6 +40,12 @@
                 </ul>
             </div>
         </div>
+    </div>
 
+    <div class="flex m-3 gap-5">
+        <div class="bg-white shadow-lg rounded-md" style="width:35%;height:420px;">
+
+        </div>
+        <div class="bg-white shadow-lg rounded-md" style="width:65%;height:120px;"></div>
     </div>
 @endsection

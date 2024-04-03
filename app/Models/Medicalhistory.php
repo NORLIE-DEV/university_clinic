@@ -29,8 +29,10 @@ class Medicalhistory extends Model
         'food_allergy',
         'medicine_allergy',
         'other_allergy',
-        'illness', // Include 'illness' in the fillable array
+        'illness',
+        'other_illness', // Include 'illness' in the fillable array
         // Add any other attributes you want to make fillable
+
     ];
 
     public function setIllnessAttribute($value)

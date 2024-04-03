@@ -30,6 +30,7 @@ return new class extends Migration
             $table->string('emergency_contact_name', 20);
             $table->string('emergency_contact_number', 11);
             $table->string('emergency_contact_address', 100);
+            $table->string('type')->default('employee');
             $table->string('image')->nullable();
             $table->rememberToken();
             $table->timestamps();

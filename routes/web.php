@@ -28,9 +28,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/patient_login', [AuthController::class, 'patient_login'])->name('login');
+Route::post('/login/process', [AuthController::class, 'login']);
 
-// Patient Login
-Route::get('/patient_login', [AuthController::class, 'patient_login']);
+
 
 ///////////////////////////// SUPERADMIN  ///////////////////////////////
 Route::get('/superadmin', [SuperAdminController::class, 'superadmin_index']);
@@ -66,7 +67,16 @@ Route::post('/import-excel/employee', [ExcelImportController::class, 'import_emp
 
 
 ///////////////////////////// PATIENT //////////////////////////////////'
-Route::get('/patient_index', [PatientController::class, 'patient_index']);
+
+
+
+
+Route::middleware(['auth:student'])->group(function () {
+    Route::get('/patient_index', [PatientController::class, 'patient_index'])->name('patient.index');
+    Route::post('/student_logout', [AuthController::class, "studentLogout"]);
+});
+
+
 
 
 ///////////////////////////// NURSE ///////////////////////////////////
@@ -100,5 +110,5 @@ Route::get('/admin_patient_info/{id}', [AdminPatientController::class, "patient_
 Route::get('/admin_patient_medicalHistory_info/{id}', [AdminPatientController::class, "patient_medicalHistory"]);
 
 Route::post('/add_medicalhistory', [AdminPatientController::class, 'add_medicalhistory']);
+Route::put('/medicalhistory/{medicalhistory}', [AdminPatientController::class, 'update_medicalHistory']);
 //
-

@@ -1,40 +1,80 @@
-@include('partials.__header')
+@extends('layout.landingpage_layout')
 
-{{-- box wrapper --}}
-<div class="flex">
-    <div class="w-1/2 bg-[#1C2434]" style="height:100vh;">
-        <h1>WEW</h1>
-    </div>
-    <div class="w-1/2 h-full bg-[#E0E2E8]" style="height: 100vh;">
+@section('content')
+    <div class="shadow-lg rounded-xl m-10 flex" style="widht:100%; height:80vh;">
+        <style>
+            .image {
+                background: url('https://img.freepik.com/free-photo/doctor-doing-their-work-pediatrics-office_23-2149224139.jpg?t=st=1712027281~exp=1712030881~hmac=f9db5f27f3c6d8b7741f3d556601e56631e75f735c38a2e893cd37ddf71603b9&w=996') no-repeat center center/cover
+            }
+        </style>
+        <div class="w-1/2 h-full bg-blue-500 rounded-l-xl image">
 
-        <div class="flex justify-center mt-10">
-            <img src="{{ asset('asset/img/79794414_111016303724059_5940762222245445632_n-800x800.png') }}"
-                style="width:50px; height:50px;" alt="clinic_logo">
         </div>
-        {{-- Form --}}
-        <div class="bg-white shadow-lg rounded-lg" style="width:400px; margin: 0 auto; height:00px;">
-            <form action="#">
-                <div class=" text-center text-xs" style="width: 400px;">
-                    <h1 class="text-center mt-10 text-3xl font-bold mb-2">WELCOME</h1>
-                    <p class="text-xs">Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis laboriosam
-                        voluptate dolores</p>
-                </div>
-                <div class="m-5">
-                    <label for="email" class="text-xs ">Email</label><br>
-                    <input type="email" id="email" name="email"
-                        class="border p-2 w-full mt-2 text-xs rounded-md" placeholder="Email Address" />
-                </div>
-                <div class="m-5">
-                    <label for="password" class="text-xs ">Password</label><br>
-                    <input type="email" id="password" name="password"
-                        class="border p-2 w-full mt-2 text-xs rounded-md" placeholder="Password" />
-                </div>
+        <div class="w-1/2">
+            <div class="flex justify-center mt-5">
+                <img src="https://unc.edu.ph/wp-content/uploads/2022/04/79794414_111016303724059_5940762222245445632_n-800x800.jpg"
+                    class="w-16" alt="">
+            </div>
+            <div class="text-center leading-relaxed">
+                <h1 class="text-xl m-3 font-semibold text-gray-600">Sign Your Account!</h1>
+                <p class="text-xs text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, beatae.</p>
+            </div>
 
-                <div class="m-3">
-                    <input type="submit" class="p-2 bg-red-600 w-full">
-                </div>
-            </form>
+            <div>
+                @error('error_message')
+                    <div class="mx-10 p-3 mt-3 bg-red-300 border-l-2 border-red-600 duration-700">
+                        <p class="text-xs text-gray-800">{{ $message }}</p>
+                    </div>
+                @enderror
+
+                <form action="/login/process" method="POST" class="flex justify-center">
+                    @csrf
+                    <div class="w-full p-10" style="width: 80%;">
+                        @error('email')
+                            <div class="text-white bg-red-500 w-full text-xs p-3">
+                                {{ $message }}
+                            </div>
+                        @enderror
+                        <div class="mb-5">
+                            <label for="email">Email</label><br>
+                            <input type="email" name="email" id="email"
+                                class="outline-none text-xs p-2.5 border w-full">
+                        </div>
+                        <div class="mb-5">
+                            <label for="password">Password</label><br>
+                            <div class="relative">
+                                <input type="password" id="password" name="password"
+                                    class="outline-none text-xs p-2.5 border w-full">
+                                <i class="fa-solid fa-eye-slash fa-sm mt-5 absolute top-0 right-0 mr-3 text-gray-400 cursor-pointer"
+                                    id="togglePassword"></i>
+                            </div>
+                        </div>
+                        <div class="mt-5">
+                            <input type="submit" value="Sign In"
+                                class="outline-none text-xs p-2.5 border w-full bg-blue-500 text-white">
+                        </div>
+                        <div class="mt-5">
+                            <span class="text-gray-600">Don't have an account? <a href=""
+                                    class="text-blue-600 underline text-xs">Contact UNC IT Dept.</a></span>
+                        </div>
+                    </div>
+                </form>
+
+
+
+            </div>
         </div>
+
     </div>
-</div>
-@include('partials.__footer')
+
+    <script>
+        const togglePassword = document.querySelector("#togglePassword");
+        const password = document.querySelector("#password");
+
+        togglePassword.addEventListener("click", function() {
+            const type = password.getAttribute("type") === "password" ? "text" : "password";
+            password.setAttribute("type", type);
+            this.classList.toggle("fa-eye");
+        });
+    </script>
+@endsection

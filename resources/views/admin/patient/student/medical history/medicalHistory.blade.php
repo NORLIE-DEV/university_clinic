@@ -20,7 +20,7 @@
             </div>
         </div>
         {{-- patient information --}}
-        <div class="mt-5">
+        {{-- <div class="mt-5">
             <div>
                 <span class="font-light">Patient Name : <span
                         class="text-blue-950 font-semibold">{{ $patientsInfo->student->first_name }}
@@ -47,131 +47,165 @@
                         {{ $patientsInfo->student->contact_number }}
                     </span></span>
             </div>
-        </div>
+        </div> --}}
 
         {{-- Guardian --}}
         @if ($hasMedicalHistory)
             @foreach ($medicalHistory as $history)
-                <div class="mt-10 text-lg bg-blue-950 p-3 text-white">
-                    <h1>Past History</h1>
-                </div>
-                <div class="w-full h-auto bg-white shadow">
-                    <div class="relative overflow-hidden shadow-md rounded-lg mt-5">
-                        <h1 class="p-2 mt-5 ml-10 text-center text-xl font-medium">illness</h1>
-                        <hr style="width:90%; margin: 0 auto; border:1px solid gray;">
-                        <div class="flex justify-center ml-14 mb-5" id="illness">
-                            <div style="width: 50%;">
+                <form action="/medicalhistory/{{ $history->id }}" method="POST" enctype="multipart/form-data">
+                    @method('PUT')
+                    @csrf
+                    <div class="mt-10 text-lg bg-blue-950 p-3 text-white">
+                        <h1>Past History</h1>
+                    </div>
+                    <div class="w-full h-auto bg-white shadow">
+                        <div class="relative overflow-hidden shadow-md rounded-lg mt-5">
+                            <h1 class="p-2 mt-5 ml-10 text-center text-xl font-medium">illness</h1>
+                            <hr style="width:90%; margin: 0 auto; border:1px solid gray;">
+                            <div class="flex justify-center ml-14 mb-5" id="illness">
+                                <div style="width: 50%;">
 
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Asthma"
-                                        {{ str_contains($history->illness, 'Asthma') ? 'checked' : '' }}>
-                                    <span class="text-sm">Asthma</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Chicken Fox"
-                                        {{ str_contains($history->illness, 'Chicken Fox') ? 'checked' : '' }}>
-                                    <span class="text-sm">Chicken Fox</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Chronic Ear Infections or Otitis Media"
-                                        {{ str_contains($history->illness, 'Chronic Ear Infections or Otitis Media') ? 'checked' : '' }}>
-                                    <span class="text-sm">Chronic Ear Infections or Otitis Media</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Diabetes"
-                                        {{ str_contains($history->illness, 'Diabetes') ? 'checked' : '' }}>
-                                    <span class="text-sm">Diabetes</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Epilepsy"
-                                        {{ str_contains($history->illness, 'Epilepsy') ? 'checked' : '' }}>
-                                    <span class="text-sm">Epilepsy</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Fainting Spells"
-                                        {{ str_contains($history->illness, 'Fainting Spells') ? 'checked' : '' }}>
-                                    <span class="text-sm">Fainting Spells</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Febrile Convulsions"
-                                        {{ str_contains($history->illness, 'Febrile Convulsions') ? 'checked' : '' }}>
-                                    <span class="text-sm">Febrile Convulsions</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Heart Disorder"
-                                        {{ str_contains($history->illness, 'Heart Disorder') ? 'checked' : '' }}>
-                                    <span class="text-sm">Heart Disorder</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Hepatitis A"
-                                        {{ str_contains($history->illness, 'Hepatitis A') ? 'checked' : '' }}>
-                                    <span class="text-sm">Hepatitis A</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Hepatitis B"
-                                        {{ str_contains($history->illness, 'Hepatitis B') ? 'checked' : '' }}>
-                                    <span class="text-sm">Hepatitis B</span>
-                                </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Asthma"
+                                            {{ str_contains($history->illness, 'Asthma') ? 'checked' : '' }}>
+                                        <span class="text-sm">Asthma</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Chicken Fox"
+                                            {{ str_contains($history->illness, 'Chicken Fox') ? 'checked' : '' }}>
+                                        <span class="text-sm">Chicken Fox</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]"
+                                            value="Chronic Ear Infections or Otitis Media"
+                                            {{ str_contains($history->illness, 'Chronic Ear Infections or Otitis Media') ? 'checked' : '' }}>
+                                        <span class="text-sm">Chronic Ear Infections or Otitis Media</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Diabetes"
+                                            {{ str_contains($history->illness, 'Diabetes') ? 'checked' : '' }}>
+                                        <span class="text-sm">Diabetes</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Epilepsy"
+                                            {{ str_contains($history->illness, 'Epilepsy') ? 'checked' : '' }}>
+                                        <span class="text-sm">Epilepsy</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Fainting Spells"
+                                            {{ str_contains($history->illness, 'Fainting Spells') ? 'checked' : '' }}>
+                                        <span class="text-sm">Fainting Spells</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Febrile Convulsions"
+                                            {{ str_contains($history->illness, 'Febrile Convulsions') ? 'checked' : '' }}>
+                                        <span class="text-sm">Febrile Convulsions</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Heart Disorder"
+                                            {{ str_contains($history->illness, 'Heart Disorder') ? 'checked' : '' }}>
+                                        <span class="text-sm">Heart Disorder</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Hepatitis A"
+                                            {{ str_contains($history->illness, 'Hepatitis A') ? 'checked' : '' }}>
+                                        <span class="text-sm">Hepatitis A</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Hepatitis B"
+                                            {{ str_contains($history->illness, 'Hepatitis B') ? 'checked' : '' }}>
+                                        <span class="text-sm">Hepatitis B</span>
+                                    </div>
 
-                            </div>
-                            <div style="width: 50%;">
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Measles"
-                                        {{ str_contains($history->illness, 'Measles') ? 'checked' : '' }}>
-                                    <span class="text-sm">Measles</span>
                                 </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Meningitis"
-                                        {{ str_contains($history->illness, 'Meningitis') ? 'checked' : '' }}>
-                                    <span class="text-sm">Meningitis</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Mumps"
-                                        {{ str_contains($history->illness, 'Mumps') ? 'checked' : '' }}>
-                                    <span class="text-sm">Mumps</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Primary Complex"
-                                        {{ str_contains($history->illness, 'Primary Complex') ? 'checked' : '' }}>
-                                    <span class="text-sm">Primary Complex</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Rubella"
-                                        {{ str_contains($history->illness, 'Rubella') ? 'checked' : '' }}>
-                                    <span class="text-sm">Rubella</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Scoliosis"
-                                        {{ str_contains($history->illness, 'Scoliosis') ? 'checked' : '' }}>
-                                    <span class="text-sm">Scoliosis</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]"
-                                        value="Skin Problems"{{ str_contains($history->illness, 'Skin Problems') ? 'checked' : '' }}>
-                                    <span class="text-sm">Skin
-                                        Problems</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Urinary Tract Infections"
-                                        {{ str_contains($history->illness, 'Urinary Tract Infections') ? 'checked' : '' }}>
-                                    <span class="text-sm">Urinary Tract Infections</span>
-                                </div>
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value=">Whooping Cough"
-                                        {{ str_contains($history->illness, '>Whooping Cough') ? 'checked' : '' }}>
-                                    <span class="text-sm">Whooping Cough</span>
-                                </div>
+                                <div style="width: 50%;">
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Measles"
+                                            {{ str_contains($history->illness, 'Measles') ? 'checked' : '' }}>
+                                        <span class="text-sm">Measles</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Meningitis"
+                                            {{ str_contains($history->illness, 'Meningitis') ? 'checked' : '' }}>
+                                        <span class="text-sm">Meningitis</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Mumps"
+                                            {{ str_contains($history->illness, 'Mumps') ? 'checked' : '' }}>
+                                        <span class="text-sm">Mumps</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Primary Complex"
+                                            {{ str_contains($history->illness, 'Primary Complex') ? 'checked' : '' }}>
+                                        <span class="text-sm">Primary Complex</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Rubella"
+                                            {{ str_contains($history->illness, 'Rubella') ? 'checked' : '' }}>
+                                        <span class="text-sm">Rubella</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Scoliosis"
+                                            {{ str_contains($history->illness, 'Scoliosis') ? 'checked' : '' }}>
+                                        <span class="text-sm">Scoliosis</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]"
+                                            value="Skin Problems"{{ str_contains($history->illness, 'Skin Problems') ? 'checked' : '' }}>
+                                        <span class="text-sm">Skin
+                                            Problems</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value="Urinary Tract Infections"
+                                            {{ str_contains($history->illness, 'Urinary Tract Infections') ? 'checked' : '' }}>
+                                        <span class="text-sm">Urinary Tract Infections</span>
+                                    </div>
+                                    <div class="ml-10 mt-5">
+                                        <input type="checkbox" name="illness[]" value=">Whooping Cough"
+                                            {{ str_contains($history->illness, '>Whooping Cough') ? 'checked' : '' }}>
+                                        <span class="text-sm">Whooping Cough</span>
+                                    </div>
 
-                                <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Others"> <span
-                                        class="text-sm">Others</span>
-                                    <input type="text" name="others" id="others"
-                                        class="border text-xs p-2 outline-none">
+                                    <div class="ml-10 mt-5">
+                                        <label for="other_illness">Other_illness : </label>
+                                        <input type="text" name="other_illness" id="other_illness"
+                                            value="{{ $history->other_illness }}"
+                                            class="border text-xs p-2 outline-none">
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
+
+                    <div class="w-full bg-white shadow h-auto">
+                        <h1 class="ml-5 text-md text-gray-500 font-medium mt-5">Please indicate if the patient has any
+                            allergies
+                        </h1>
+                        <div class="w-full px-10 mt-5">
+                            <label for="food_allergy" class="text-sm">Food</label>
+                            <input type="text" name="food_allergy" id="food_allergy"
+                                class="border p-2 text-xs outline-none" style="width:100%;"
+                                value="{{ $history->food_allergy }}">
+                        </div>
+                        <div class="w-full px-10 mt-2">
+                            <label for="medicine_allergy" class="text-sm">Medicine</label>
+                            <input type="text" name="medicine_allergy" id="medicine_allergy"
+                                class="border p-2 text-xs outline-none" style="width:100%;"
+                                value="{{ $history->medicine_allergy }}">
+                        </div>
+                        <div class="w-full px-10 mt-2 pb-10">
+                            <label for="other_allergy" class="text-sm">Others</label>
+                            <input type="text" name="other_allergy" id="other_allergy"
+                                class="border p-2 text-xs outline-none" style="width:100%;"
+                                value="{{ $history->other_allergy }}">
+                        </div>
+                    </div>
+
+                    <div class="mb-10 mt-3">
+                        <input type="submit" value="Update Medical Info"
+                            class="float-right bg-blue-950 text-xs text-white p-2 mb-4 mt-2">
+                    </div>
+                </form>
             @endforeach
         @else
             <form id="medicalHistoryForm" action="#">
@@ -362,9 +396,8 @@
                                         class="text-sm">Whooping Cough</span>
                                 </div>
                                 <div class="ml-10 mt-5">
-                                    <input type="checkbox" name="illness[]" value="Others"> <span
-                                        class="text-sm">Others</span>
-                                    <input type="text" name="others" id="others"
+                                    <label for="other_illness">Other_illness : </label>
+                                    <input type="text" name="other_illness" id="other_illness"
                                         class="border text-xs p-2 outline-none">
                                 </div>
                             </div>

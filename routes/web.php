@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\SupplierController;
@@ -11,7 +12,8 @@ use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\AdminPatientController;
 use App\Http\Controllers\PatientLoginController;
 use App\Http\Controllers\MedicineStockController;
-
+use App\Http\Controllers\MedicalConsultaionController;
+use App\Http\Controllers\TimingController;
 
 /*
 |--------------------------------------------------------------------------
@@ -71,8 +73,20 @@ Route::post('/import-excel/employee', [ExcelImportController::class, 'import_emp
 
 
 
-Route::middleware(['auth:student'])->group(function () {
+Route::middleware(['auth:patient'])->group(function () {
     Route::get('/patient_index', [PatientController::class, 'patient_index'])->name('patient.index');
+
+    // department
+    Route::get('/patient/department', [PatientController::class, 'department']);
+    Route::get('/patient/department/dental', [PatientController::class, 'dental']);
+    Route::get('/patient/department/medical', [PatientController::class, 'medical']);
+
+    // booked
+    Route::get('/patient/finddoctor', [PatientController::class, 'finddoctor']);
+    Route::get('/patient/booked/{id}', [PatientController::class, 'bookedAppointment'])->name('patient.booked');
+    Route::post('/check-availability', [PatientController::class, "checkAvailability"]);
+    Route::post('/make-appointment', [PatientController::class, "makeAppointment"])->name('make.appointment');
+
     Route::post('/student_logout', [AuthController::class, "studentLogout"]);
 });
 
@@ -107,8 +121,24 @@ Route::put('/medicineStocks/{medicineStocks}', [MedicineStockController::class, 
 Route::get('/admin_patient_index', [AdminPatientController::class, 'adminPatientIndex']);
 Route::get('/admin/patient/student', [AdminPatientController::class, 'student_patient']);
 Route::get('/admin_patient_info/{id}', [AdminPatientController::class, "patient_info"]);
-Route::get('/admin_patient_medicalHistory_info/{id}', [AdminPatientController::class, "patient_medicalHistory"]);
+// Route::get('/admin_patient_medicalHistory_info/{id}', [AdminPatientController::class, "patient_medicalHistory"]);
+Route::get('/admin_patient_medicalInformation/{id}', [AdminPatientController::class, "patient_medicaInformation"]);
 
-Route::post('/add_medicalhistory', [AdminPatientController::class, 'add_medicalhistory']);
-Route::put('/medicalhistory/{medicalhistory}', [AdminPatientController::class, 'update_medicalHistory']);
+Route::post('/add_medicalinformation', [AdminPatientController::class, 'add_medicalinfo']);
+Route::put('/medicalinfo/{medicalinfo}', [AdminPatientController::class, 'update_medicalInfo']);
+
+// medical consultaion
+Route::get('/admin_medical_consultation/{id}', [MedicalConsultaionController::class, 'medical_consultation']);
 //
+
+
+
+Route::middleware(['auth:doctor'])->group(function () {
+    // DOCTOR
+    Route::get('/doctor_index', [DoctorController::class, 'doctor_index'])->name('doctor.index');
+    Route::post('/doctor_logout', [AuthController::class, "doctorLogout"]);
+
+    // TIming
+    Route::get('/doctor_timing', [DoctorController::class, 'timing']);
+    Route::post('/create_timing', [TimingController::class, 'storeDoctorTiming']);
+});

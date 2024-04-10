@@ -58,7 +58,11 @@ return [
         ],
         'superadmin' => [
             'driver' => 'session',
-            'provider' => 'admins',
+            'provider' => 'superadmins',
+        ],
+        'patient' => [
+            'driver' => 'session',
+            'provider' => 'patients',
         ],
     ],
 
@@ -106,6 +110,10 @@ return [
         'superadmins' => [
             'driver' => 'eloquent',
             'model' => App\Models\Superadmin::class,
+        ],
+        'patients' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Patient::class,
         ],
         // 'users' => [
         //     'driver' => 'database',
@@ -170,6 +178,12 @@ return [
 
         'superadmins' => [
             'provider' => 'superadmins',
+            'table' => 'password_reset_tokens',
+            'expire' => 60,
+            'throttle' => 60,
+        ],
+        'patients' => [
+            'provider' => 'patients',
             'table' => 'password_reset_tokens',
             'expire' => 60,
             'throttle' => 60,

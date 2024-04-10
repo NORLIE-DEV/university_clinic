@@ -1,4 +1,4 @@
-<nav class="w-full h-24 bg-white shadow-md flex justify-between items-center sticky top-0 left-0">
+<nav class="w-full h-24 bg-white shadow-md flex justify-between items-center sticky top-0 left-0 z-10">
     {{-- logo --}}
     <div class="ml-10 mb-3">
         <a href="/">
@@ -23,10 +23,9 @@
             }
         </style>
         <ul class="flex font-medium">
-            <li><a href="/">Home</a></li>
-            <li><a href="#">About</a></li>
-            <li><a href="#">Doctors</a></li>
-            <li><a href="#">Department</a></li>
+            <li><a href="/patient_index">Home</a></li>
+            <li><a href="/patient/department">Department</a></li>
+            <li><a href="/patient/finddoctor">Find a Doctor</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
     </div>

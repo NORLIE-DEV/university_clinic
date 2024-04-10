@@ -5,8 +5,10 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Patient extends Model
+
+class Patient extends Authenticatable
 {
     use HasFactory;
 
@@ -24,9 +26,39 @@ class Patient extends Model
         return $this->belongsTo(Student::class, 'student_id');
     }
 
-    public function medicalHistory()
+    public function medicalInfo()
     {
-        return $this->hasMany(MedicalHistory::class);
+        return $this->hasMany(Medicalinformation::class);
+    }
+
+    public function getAuthIdentifierName()
+    {
+        return 'id'; // Assuming 'id' is the primary key column name
+    }
+
+    public function getAuthIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
+
+    public function getRememberToken()
+    {
+        return null; // not used
+    }
+
+    public function setRememberToken($value)
+    {
+        // not used
+    }
+
+    public function getRememberTokenName()
+    {
+        return null; // not used
     }
     public static function boot()
     {

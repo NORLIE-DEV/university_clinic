@@ -21,7 +21,7 @@
                         <select name="department" id="department" class="w-full p-2 text-xs rounded-md mt-2"
                             style="border:1px solid gray;">
                             <option value="physician">Physician</option>
-                            <option value="dental">Dental</option>
+                            <option value="dentist">dentist</option>
                         </select>
                     </div>
                     <h4 class="ml-2 font-semibold mt-5">Doctor Information</h4>

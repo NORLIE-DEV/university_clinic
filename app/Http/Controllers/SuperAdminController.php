@@ -48,7 +48,7 @@ class SuperAdminController extends Controller
 
 
         foreach ($students as $student) {
-
+            $password = $student->password;
             if (!Patient::where('student_id', $student->id)->exists()) {
                 $patient = new Patient();
                 $patient->student_id = $student->id;

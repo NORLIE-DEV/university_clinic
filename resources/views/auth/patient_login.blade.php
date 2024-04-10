@@ -36,15 +36,15 @@
                             </div>
                         @enderror
                         <div class="mb-5">
-                            <label for="email">Email</label><br>
+                            <label for="email" class="text-gray-600">Email</label><br>
                             <input type="email" name="email" id="email"
-                                class="outline-none text-xs p-2.5 border w-full">
+                                class="outline-none text-xs p-2.5 border w-full text-gray-400 font-normal">
                         </div>
                         <div class="mb-5">
-                            <label for="password">Password</label><br>
+                            <label for="password" class="text-gray-600">Password</label><br>
                             <div class="relative">
                                 <input type="password" id="password" name="password"
-                                    class="outline-none text-xs p-2.5 border w-full">
+                                    class="outline-none text-xs p-2.5 border w-full  text-gray-400 font-normal">
                                 <i class="fa-solid fa-eye-slash fa-sm mt-5 absolute top-0 right-0 mr-3 text-gray-400 cursor-pointer"
                                     id="togglePassword"></i>
                             </div>

@@ -35,6 +35,18 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->timestamps();
         });
+
+        Schema::create('medicinestocks', function (Blueprint $table) {
+            $table->string('id')->unique()->nullable();
+            $table->uuid('medicine_id')->nullable(); // Change to UUID data type
+            $table->foreign('medicine_id')->references('id')->on('medicines')->onDelete('cascade'); // Reference custom UUID primary key
+            $table->string('batch_id', 15)->unique();
+            $table->date('date_recieve');
+            $table->date('expiration_date');
+            $table->integer('quantity');
+            $table->rememberToken();
+            $table->timestamps();
+        });
     }
 
     /**

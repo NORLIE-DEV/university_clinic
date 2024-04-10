@@ -25,7 +25,7 @@
                             style="border:1px solid gray;">
                             <option value="physician"{{ $doctors->department == 'physician' ? 'selected' : '' }}>Physician
                             </option>
-                            <option value="dental"{{ $doctors->department == 'dental' ? 'selected' : '' }}>Dental
+                            <option value="dentist"{{ $doctors->department == 'dentist' ? 'selected' : '' }}>Dentist
                             </option>
                         </select>
                     </div>

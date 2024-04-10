@@ -29,8 +29,8 @@
                     <li class="p-2"><a href="#">Patient Details</a></li>
                 </ul>
                 <ul class="p-2">
-                    <li class="p-2"><a href="/admin_patient_medicalHistory_info/{{ $patientsInfo->id }}">Medical
-                            History</a></li>
+                    <li class="p-2"><a href="/admin_patient_medicalInformation/{{ $patientsInfo->id }}">Medical
+                            Information</a></li>
                 </ul>
                 <ul class="p-2">
                     <li class="p-2"><a href="#">Consultation History</a></li>
@@ -43,9 +43,21 @@
     </div>
 
     <div class="flex m-3 gap-5">
-        <div class="bg-white shadow-lg rounded-md" style="width:35%;height:420px;">
+        <div class="bg-white shadow-lg rounded-md" style="width:25%;height:420px;">
+            <div class="font-light text-gray-100 text-center text-lg rounded-t-md py-3 bg-blue-900 w-full">
+                Tools <i class="fa-solid fa-screwdriver-wrench"></i>
+            </div>
+            <ul>
+                <li>
+                    <div class="mt-5 ml-5 text-sm text-gray-500">Consultation <span class="ml-1"><i class="fa-solid fa-clipboard-question"></i></span> </div>
+                    <a href="/admin_medical_consultation/{{$patientsInfo->id}}" class="ml-10 text-xs text-gray-400">Medical Consultaion</a>
+                </li>
+                <li>
 
+                    <a href="#" class="ml-10 text-xs text-gray-400">Dental Consultaion</a>
+                </li>
+            </ul>
         </div>
-        <div class="bg-white shadow-lg rounded-md" style="width:65%;height:120px;"></div>
+        <div class="bg-white shadow-lg rounded-md" style="width:75%;height:120px;"></div>
     </div>
 @endsection

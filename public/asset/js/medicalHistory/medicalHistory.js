@@ -1,7 +1,7 @@
 $(document).ready(function () {
     $("#medicalHistoryForm").submit(function (e) {
         e.preventDefault();
-        alert("PISOT NA DAKULA");
+        alert("PISOT NA DAKULA 123");
 
         $.ajaxSetup({
             headers: {
@@ -12,7 +12,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "POST",
-            url: "/add_medicalhistory",
+            url: "/add_medicalinformation",
             data: formData,
             processData: false,
             contentType: false,

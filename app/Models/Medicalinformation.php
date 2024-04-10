@@ -6,7 +6,7 @@ use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Medicalhistory extends Model
+class Medicalinformation extends Model
 {
     use HasFactory;
     protected $primaryKey = 'id'; // Specify the custom ID as the primary key
@@ -14,24 +14,29 @@ class Medicalhistory extends Model
 
     protected $fillable = [
         'patient_id',
-        'father_first_name',
-        'father_middle_name',
-        'father_last_name',
-        'father_cp_number',
-        'father_email',
-        'mother_first_name',
-        'mother_middle_name',
-        'mother_last_name',
-        'mother_cp_number',
-        'mother_email',
-        'emergency_contact_name',
-        'emergency_contact_number',
+        'illness',
+        'other_illness',
         'food_allergy',
         'medicine_allergy',
+        'insect_bite_allergy',
         'other_allergy',
-        'illness',
-        'other_illness', // Include 'illness' in the fillable array
-        // Add any other attributes you want to make fillable
+        'vission_of_righteye',
+        'vission_of_lefteye',
+        'blood_pressure',
+        'pulse_rate',
+        'blood_pressure_category',
+        'body_temperature',
+        'height',
+        'weight',
+        'bodymassindex',
+        'bodymassindex_category',
+        'injurie_status',
+        'dateofinjurie',
+        'name_of_hospital',
+        'immunization',
+        'other_immunization',
+        'familyhistory',
+        'other_familyhistory'
 
     ];
 
@@ -42,6 +47,26 @@ class Medicalhistory extends Model
 
 
     public function getIllnessAttribute($value)
+    {
+        return json_decode($value, true);
+    }
+
+    public function setImmunizationAttribute($value)
+    {
+        $this->attributes['immunization'] = json_encode($value);
+    }
+
+    public function getImmunizationAttribute($value)
+    {
+        return json_decode($value, true);
+    }
+
+    public function setFamilyhistoryAttribute($value)
+    {
+        $this->attributes['familyhistory'] = json_encode($value);
+    }
+
+    public function getFamilyhistoryAttribute($value)
     {
         return json_decode($value, true);
     }
@@ -59,4 +84,5 @@ class Medicalhistory extends Model
             }
         });
     }
+    use HasFactory;
 }

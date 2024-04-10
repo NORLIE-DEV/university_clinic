@@ -6,6 +6,7 @@ namespace App\Http\Controllers;
 use App\Models\Patient;
 use Illuminate\Http\Request;
 use App\Models\Medicalhistory;
+use App\Models\Medicalinformation;
 use Illuminate\Support\Facades\Log;
 
 class AdminPatientController extends Controller
@@ -28,77 +29,100 @@ class AdminPatientController extends Controller
         return view('admin.patient.student.patient_info', ["patientsInfo" => $patientsInfo]);
     }
 
-    // Medical History
-    public function patient_medicalHistory($id)
+
+    public function patient_medicaInformation($id)
     {
         $patientsInfo = Patient::findOrFail($id);
-        $medicalHistory = $patientsInfo->medicalHistory;
+        $medicalInfo = $patientsInfo->medicalInfo;
 
 
-        $hasMedicalHistory = $medicalHistory && $medicalHistory->isNotEmpty();
+        $hasMedicalInfo = $medicalInfo && $medicalInfo->isNotEmpty();
 
-        return view('admin.patient.student.medical history.medicalHistory', [
+        return view('admin.patient.student.medical history.medicalIformation', [
             'patientsInfo' => $patientsInfo,
-            'medicalHistory' => $medicalHistory,
-            'hasMedicalHistory' => $hasMedicalHistory,
+            'medicalInfo' => $medicalInfo,
+            'hasMedicalInfo' => $hasMedicalInfo,
         ]);
     }
 
-    public function add_medicalhistory(Request $request)
+    public function add_medicalinfo(Request $request)
     {
-
         // Validate the incoming request
         $validated = $request->validate([
             'patient_id' => 'required',
-            'father_first_name' => 'required',
-            'father_middle_name' => 'required',
-            'father_last_name' => 'required',
-            'father_cp_number' => 'required',
-            'father_email' => 'required|email',
-            'mother_first_name' => 'required',
-            'mother_middle_name' => 'required',
-            'mother_last_name' => 'required',
-            'mother_cp_number' => 'required',
-            'mother_email' => 'required|email',
-            'emergency_contact_name' => 'required',
-            'emergency_contact_number' => 'required',
-            'food_allergy' => 'nullable',
-            'medicine_allergy' => 'nullable',
-            'other_allergy' => 'nullable',
             'illness' => 'nullable',
             'other_illness' => 'nullable',
+            'food_allergy' => 'nullable',
+            'medicine_allergy' => 'nullable',
+            'insect_bite_allergy' => 'nullable',
+            'other_allergy' => 'nullable',
+            'vission_of_righteye' => 'nullable',
+            'vission_of_lefteye' => 'nullable',
+            'blood_pressure' => 'required',
+            'pulse_rate' => 'required',
+            'blood_pressure_category' => 'nullable',
+            'body_temperature' => 'required',
+            'height' => 'nullable',
+            'weight' => 'nullable',
+            'bodymassindex' => 'nullable',
+            'bodymassindex_category' => 'nullable',
+            'injurie_status' => 'nullable',
+            'dateofinjurie' => 'nullable',
+            'name_of_hospital' => 'nullable',
+            'immunization' => 'nullable',
+            'other_immunization' => 'nullable',
+            'familyhistory' => 'nullable',
+            'other_familyhistory' => 'nullable',
         ]);
 
-
-        $medicalHistory = new Medicalhistory();
+        $medicalHistory = new Medicalinformation();
         $medicalHistory->fill($validated);
         $medicalHistory->illness = json_encode($validated['illness']);
+        $medicalHistory->immunization = json_encode($validated['immunization']);
+        $medicalHistory->familyhistory = json_encode($validated['familyhistory']);
         $medicalHistory->save();
 
         return response()->json(['message' => 'Medical history added successfully', 'data' => $medicalHistory], 200);
     }
 
-    public function update_medicalhistory(Request $request, $id)
+
+    public function update_medicalInfo(Request $request, $id)
     {
-        $medicalHistory = Medicalhistory::findOrFail($id);
+        $medicalInfo = Medicalinformation::findOrFail($id);
         $validated = $request->validate([
-            'food_allergy' => 'nullable',
-            'medicine_allergy' => 'nullable',
-            'other_allergy' => 'nullable',
+            'patient_id' => 'required',
             'illness' => 'nullable',
             'other_illness' => 'nullable',
+            'food_allergy' => 'nullable',
+            'medicine_allergy' => 'nullable',
+            'insect_bite_allergy' => 'nullable',
+            'other_allergy' => 'nullable',
+            'vission_of_righteye' => 'nullable',
+            'vission_of_lefteye' => 'nullable',
+            'blood_pressure' => 'required',
+            'pulse_rate' => 'required',
+            'blood_pressure_category' => 'nullable',
+            'body_temperature' => 'required',
+            'height' => 'nullable',
+            'weight' => 'nullable',
+            'bodymassindex' => 'nullable',
+            'bodymassindex_category' => 'nullable',
+            'injurie_status' => 'nullable',
+            'dateofinjurie' => 'nullable',
+            'name_of_hospital' => 'nullable',
+            'immunization' => 'nullable',
+            'other_immunization' => 'nullable',
+            'familyhistory' => 'nullable',
+            'other_familyhistory' => 'nullable',
         ]);
-        $medicalHistory->fill($validated);
 
-        if (array_key_exists('illness', $validated)) {
+        $medicalInfo->fill($validated);
+        $medicalInfo->illness = isset($validated['illness']) ? json_encode($validated['illness']) : null;
+        $medicalInfo->immunization = isset($validated['immunization']) ? json_encode($validated['immunization']) : null;
+        $medicalInfo->familyhistory = isset($validated['familyhistory']) ? json_encode($validated['familyhistory']) : null;
 
-            $medicalHistory->illness = json_encode($validated['illness']);
-        } else {
+        $medicalInfo->save();
 
-            $medicalHistory->illness = null;
-        }
-        $medicalHistory->save();
-
-        return response()->json(['message' => 'Medical history updated successfully', 'data' => $medicalHistory], 200);
+        return redirect()->back()->with('success', 'Medical history updated successfully');
     }
 }

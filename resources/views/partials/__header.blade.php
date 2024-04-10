@@ -29,10 +29,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     {{-----------------------------Script ----------------------------------------------------}}
-   
+
 
     <script src="{{asset('asset/js/datatable/datatables.min.js')}}"></script>
     <link rel="stylesheet" href="{{asset('asset/js/datatable/datatables.min.css')}}">
+
+    <link rel="stylesheet" href="{{asset('asset/js/time/jquery.timepicker.css')}}">
+    <script src="{{asset('asset/js/time/jquery.timepicker.js')}}"></script>
 </head>
 
 <body>

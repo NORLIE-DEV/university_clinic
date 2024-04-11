@@ -104,7 +104,7 @@
         @foreach ($doctors as $doctor)
             @if ($doctor->id === $current_doctor->id)
                 <div class="doctor-schedule mt-4">
-                    <div class="day-container-wrapper flex flex-wrap">
+                    <div class="day-container-wrapper flex gap-y-10 flex-wrap justify-start">
                         @php
                             $doctorHasTiming = false;
                         @endphp
@@ -119,8 +119,16 @@
                             @if ($timingsForDay->count() > 0)
                                 <div class="day-container bg-white border shadow-xl p-5 ml-10 text-xs"
                                     style="width: 45%;height:auto;">
-                                    <h3 class="text-lg font-bold">{{ ucfirst($day) }} -
-                                        {{ $nextOccurrences[$day]->format('Y-m-d') }}</h3>
+                                    <div class="flex justify-between items-center">
+                                        <h3 class="text-lg font-bold">
+                                            <span class="text-blue-950 p-3"><i
+                                                    class="fa-solid fa-calendar-plus"></i></span>{{ $nextOccurrences[$day]->locale('en')->formatLocalized('%B %d, %Y') }}
+                                        </h3>
+                                        <div class="bg-gray-600 p-3 w-24 text-center rounded-lg shadow-lg text-white">
+                                            {{ ucfirst($day) }}
+                                        </div>
+                                    </div>
+                                    <hr class="mt-5">
                                     <div class="day-details">
                                         @foreach ($timingsForDay as $index => $timing)
                                             @php
@@ -136,9 +144,12 @@
                                                         ? $startTime->diffInMinutes($endTime) / $avgTime
                                                         : 0;
                                             @endphp
-
-                                            @if ($numSlots > 0)
-                                                <h4 class="text-md font-bold mt-4">Shift {{ $index + 1 }}</h4>
+                                            <div class="text-xl font-medium text-blue-950 m-3">
+                                                {{ $timing->start_time }} - {{ $timing->end_time }}
+                                            </div>
+                                            @if (
+                                                $numSlots > 0 &&
+                                                    !($currentDate === $nextOccurrences[$day]->format('Y-m-d') && $currentTime >= $endTime->format('H:i')))
                                                 <div class="slot-container">
                                                     @for ($i = 0; $i < $numSlots; $i++)
                                                         @php
@@ -168,25 +179,17 @@
                                                                 : 'booked';
                                                             $buttonColor =
                                                                 $appointmentStatus === 'booked'
-                                                                    ? 'bg-gray-500'
+                                                                    ? 'bg-gray-600'
                                                                     : 'bg-blue-950';
-
-                                                            // Check if the current time is past the end time of the slot
-                                                            if (
-                                                                $nextOccurrences[$day]->format('Y-m-d') ===
-                                                                    $currentDate &&
-                                                                $currentTime >= $slotEndTime->format('H:i')
-                                                            ) {
-                                                                $appointmentStatus = 'past';
-                                                                $buttonColor = 'bg-gray-500';
-                                                            }
+                                                            $buttonDisabled =
+                                                                $appointmentStatus === 'booked' ? 'disabled' : '';
                                                         @endphp
                                                         <div class="slot-info mb-3">
                                                             <button
                                                                 class="text-white px-4 py-1 rounded-full shadow-md appointment-button {{ $buttonColor }}"
                                                                 data-appointment-id="{{ $appointmentId }}"
                                                                 data-appointment-info="{{ $appointmentInfoJson }}"
-                                                                @if ($appointmentStatus !== 'available') disabled @endif>
+                                                                {{ $buttonDisabled }}>
                                                                 {{ $slotStartTime->format('h:i A') }} -
                                                                 {{ $slotEndTime->format('h:i A') }}
                                                             </button>
@@ -197,10 +200,16 @@
                                         @endforeach
                                     </div>
                                     <div>
-                                     <hr>
+                                        <hr>
+                                        <div class="flex justify-center p-5">
+                                            <div class="m-3 p-3 text-sm"><span
+                                                    class="w-5 h-5 bg-blue-950  text-blue-950 m-1">A3</span>Available</div>
+                                            <div class="m-3 p-3 text-sm"><span
+                                                    class="w-5 h-5 bg-gray-500  text-gray-500 m-1">A3</span>Not Available
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-
                             @endif
                         @endforeach
                         @if (!$doctorHasTiming)
@@ -217,26 +226,95 @@
 
 
 
-        <div id="appointment_modal" class="fixed z-10 inset-0 overflow-y-auto hidden bg-gray-500 bg-opacity-75">
+        <div id="appointment_modal" class="fixed z-10 inset-0 hidden bg-gray-500 bg-opacity-75">
             <div class="flex items-center justify-center min-h-screen p-4">
-                <div class="bg-white p-6 rounded-lg shadow-md" style="width: 700px; height:500px;">
-                    <div>
+                <div class="bg-white rounded-lg shadow-lg" style="width: 600px; max-height: 600px; overflow-y: auto;">
+                    <div class="sticky top-0">
                         <input type="hidden" id="doctor_id" value="">
-                        <h1 class="text-xl font-bold mb-4" id="modal_title">Appointment Slot</h1>
-                        <p id="modal_date"></p>
-                        <p id="modal_day"></p>
-                        <p id="modal_start_time"></p>
-                        <p id="modal_end_time"></p>
-                        <input type="text" id="start_time_input" readonly>
+                        <div class="flex gap-5 items-center justify-center bg-white shadow-lg pt-5 pb-5 sticky top-0">
+                            <h1 class="text-xl font-bold text-center text-blue-900" id="modal_title">Review Request</h1>
+                            <div class="absolute right-0">
+                                <button class="p-1 mr-5 bg-gray-500 text-sm w-8 rounded-sm shadow-lg text-white"
+                                    id="close">X</button>
+                            </div>
+                        </div>
+                        <div>
+                            <hr class=" w-full" style="border-width: 1.5px;">
+                        </div>
+                        <div class="flex items-center gap-5 m-8">
+                            <img src="{{ asset('asset/img/79794414_111016303724059_5940762222245445632_n-800x800.png') }}"
+                                class="w-10" alt="">
+                            <span class="text-lg font-medium">UNC Health Services</span>
+                        </div>
+                        <div class="m-5">
+                            <hr class="mt-5" style="border-width: 1.5px;">
+                        </div>
+                        <div class="ml-5 font-medium">
+                            <h1 class="text-blue-950 font-bold">Date, Time &amp; Address</h1>
+                            <div class="m-3 text-blue-950">
+                                <div class="flex items-center text-xs mt-3 font-thin w-60">
+                                    <div>
+                                        <i class="fa-solid fa-calendar text-md"></i>
+                                    </div>
+                                    <div class="ml-5">
+                                        <span id="modal_day"></span>
+                                        <span id="modal_date"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-xs mt-3 font-thin w-60">
+                                    <div>
+                                        <i class="fa-solid fa-clock text-md"></i>
+                                    </div>
+                                    <div class="ml-5">
+                                        <span id="modal_start_time"></span>
+                                        <span id="modal_end_time"></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center text-xs mt-3 font-thin w-60">
+                                    <div>
+                                        <i class="fa-solid fa-location-dot text-md "></i>
+                                    </div>
+                                    <div class="ml-5">
+                                        <span>Jaime Hernandez St. Avenue Naga City, Philippines</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="m-5">
+                            <hr class="mt-5" style="border-width: 1.5px;">
+                        </div>
+                        <div class=" m-5 font-medium">
+                            <h1 class="text-blue-950 font-bold">Your contact info</h1>
+                            <div class="m-3 text-gray-500">
+                                <label for="full_name" class="text-xs">Full name</label>
+                                <input type="text" name="full_name" id="full_name"
+                                    class=" w-full text-xs font-light p-3 border mt-2 outline-none rounded-md"
+                                    value="{{ $user->first_name }} {{ $user->last_name }}">
+                            </div>
+                            <div class="m-3 text-gray-500">
+                                <label for="phone_number" class="text-xs">Phone number <span>(optional)</span> </label>
+                                <input type="text" name="phone_number" id="phone_number"
+                                    class=" w-full text-xs font-light p-3 border mt-2 outline-none rounded-md">
+                            </div>
+                            <div class="m-3 text-gray-500">
+                                <label for="notes" class="text-xs">Appointment notes
+                                    <span>(optional)</span></label><br>
+                                <textarea name="notes" id="notes" class="outline-none border w-full mt-2 text-xs font-light h-20 p-3"></textarea>
+                                <p class="text-xs font-thin">Let UNC health services know if you have a special request.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="m-3 pb-5">
+                            <button id="confirm_appointment"
+                                class="bg-blue-500 text-white w-full px-4 py-2 rounded-md">Confirm Appointment</button>
+                        </div>
                     </div>
-                    <input type="text" value="{{ $user->first_name }} {{ $user->last_name }}">
-                    <input type="text" value="{{ $user->email }}">
-                    <input type="text" value="{{ $user->contact_number }}">
-                    <button id="confirm_appointment" class="bg-blue-500 text-white px-4 py-2 rounded-md">Confirm
-                        Appointment</button>
+
                 </div>
+
             </div>
         </div>
+
     </div>
     <script>
         $(document).ready(function() {
@@ -247,7 +325,7 @@
                 var date = appointmentInfo.date;
                 var day = appointmentInfo.day;
                 var doctorId = appointmentInfo
-                    .doctorId; // Assuming the doctor ID is available in the appointmentInfo
+                    .doctorId;
 
                 // Set the doctor ID value in the hidden input field
                 $('#doctor_id').val(doctorId);
@@ -273,7 +351,7 @@
                         doctorId: doctorId,
                     },
                     success: function(response) {
-                        alert(response.available);
+                       // alert(response.available);
                         if (response.available) {
                             // Slot is available, show the appointment modal
                             $('#modal_date').text('Date: ' + date);
@@ -298,7 +376,7 @@
                 });
             });
 
-            $('#close_modal').click(function() {
+            $('#close').click(function() {
                 $('#appointment_modal').hide();
             });
 
@@ -311,11 +389,15 @@
                 var doctorId = $('#doctor_id')
                     .val();
 
+                var phone_number = $('#phone_number').val();
+                var full_name = $('#full_name').val();
+                var notes = $('#notes').val();
+
                 var startTimeFormatted = formatTime(startTime);
                 var endTimeFormatted = formatTime(endTime);
 
+
                 alert(startTimeFormatted);
-                alert(doctorId);
                 alert(endTimeFormatted);
 
 
@@ -330,6 +412,9 @@
                         start_time: startTimeFormatted,
                         end_time: endTimeFormatted,
                         doctor_id: doctorId,
+                        phone_number: phone_number,
+                        full_name: full_name,
+                        notes: notes,
 
                     },
                     success: function(response) {
@@ -345,16 +430,21 @@
             });
 
             function formatTime(time) {
-                var components = time.split(' ');
-                var timePart = components[0];
-                var meridiem = components[1];
-
-                var timeComponents = timePart.split(':');
+                var timeComponents = time.split(':');
                 var hours = parseInt(timeComponents[0], 10);
                 var minutes = parseInt(timeComponents[1], 10);
+
+                // Extract meridiem from the last two characters of the string
+                var meridiem = time.slice(-2);
+
+                // Convert hours to 24-hour format if necessary
                 if (meridiem === 'PM' && hours !== 12) {
                     hours += 12;
+                } else if (meridiem === 'AM' && hours === 12) {
+                    hours = 0;
                 }
+
+                // Format hours and minutes with leading zeros
                 var formattedTime = hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
                 return formattedTime;
             }
@@ -381,7 +471,6 @@
         }
 
         .slot-container {
-            margin-top: 2rem;
             padding: 2rem;
             display: flex;
             flex-wrap: wrap;
@@ -389,6 +478,16 @@
             max-width: 100%;
             overflow-x: auto;
             justify-content: start;
+        }
+
+        .bg-white {
+            scrollbar-width: none;
+
+            -ms-overflow-style: none;
+        }
+
+        .bg-white::-webkit-scrollbar {
+            display: none;
         }
     </style>
 @endsection

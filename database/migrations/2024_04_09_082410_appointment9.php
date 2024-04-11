@@ -17,6 +17,8 @@ return new class extends Migration
             $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade'); // Add foreign key constraint
             $table->uuid('patient_id')->nullable(); // Define patient_id as UUID
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade'); // Correct the reference to the patients table
+            $table->string('full_name');
+            $table->string('phone_number')->nullable();
             $table->date('date');
             $table->time('start_time');
             $table->time('end_time');

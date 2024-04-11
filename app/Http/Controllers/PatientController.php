@@ -58,6 +58,9 @@ class PatientController extends Controller
             'start_time' => 'required|date_format:H:i',
             'end_time' => 'required|date_format:H:i|after:start_time',
             'doctor_id' => 'required|exists:doctors,id',
+            'phone_number' => 'nullable',
+            'full_name' => 'required',
+            'notes' => 'nullable',
         ]);
 
         // Retrieve the currently authenticated patient
@@ -82,6 +85,8 @@ class PatientController extends Controller
             'patient_id' => $patient->id, // Use the patient's own ID
             'appointment_status' => 'booked',
             'notes' => $request->input('notes'),
+            'phone_number' => $request->input('phone_number'),
+            'full_name' => $request->input('full_name'),
         ]);
 
         // Return a success message

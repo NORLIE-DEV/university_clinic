@@ -79,6 +79,18 @@
             @yield('content')
         </div>
     </div>
+@elseif (Request::is('patient/myappointment'))
+    <div class="flex">
+        <div class="content" style="width: 100%; height:100%;">
+            @yield('content')
+        </div>
+    </div>
+@elseif (Request::is('patient/viewmyappointment/*'))
+    <div class="flex">
+        <div class="content" style="width: 100%; height:100%;">
+            @yield('content')
+        </div>
+    </div>
 @endif
 
 </style>

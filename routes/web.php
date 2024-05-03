@@ -62,16 +62,17 @@ Route::get('/updatedoctor/{id}', [SuperAdminController::class, "updatedoctor"]);
 Route::put('/doctor/{doctor}', [SuperAdminController::class, 'update']);
 Route::delete('/delete/{model}/{id}', [SuperAdminController::class, 'destroy']);
 
+Route::get('/superadmin/nurse', [SuperAdminController::class, 'nurse']);
+Route::get('/superadmin/nurse/createNurse', [SuperAdminController::class, 'createNurse']);
+Route::post('/store_nurse', [SuperAdminController::class, 'store_nurse']);
+
 Route::post('/import-excel/student', [ExcelImportController::class, 'import_student']);
 Route::post('/import-excel/employee', [ExcelImportController::class, 'import_employee']);
 
 
 
 
-///////////////////////////// PATIENT //////////////////////////////////'
-
-
-
+///////////////////////////// PATIENT //////////////////////////////////
 
 Route::middleware(['auth:patient'])->group(function () {
     Route::get('/patient_index', [PatientController::class, 'patient_index'])->name('patient.index');
@@ -86,6 +87,16 @@ Route::middleware(['auth:patient'])->group(function () {
     Route::get('/patient/booked/{id}', [PatientController::class, 'bookedAppointment'])->name('patient.booked');
     Route::post('/check-availability', [PatientController::class, "checkAvailability"]);
     Route::post('/make-appointment', [PatientController::class, "makeAppointment"])->name('make.appointment');
+
+    // view appointment
+    Route::get('/patient/myappointment', [PatientController::class, 'viewAppointment']);
+    Route::get('/patient/viewmyappointment/{id}', [PatientController::class, 'viewMyAppointment']);
+    Route::get('/get-all-appointments', [PatientController::class, 'getAllAppointments']);
+
+
+    // get doctor
+    Route::get('/patient/getDoctors', [PatientController::class, 'getDoctors']);
+    Route::get('/get-appointments/{doctorId}',[PatientController::class,'getAppointmentsByDoctor']);
 
     Route::post('/student_logout', [AuthController::class, "studentLogout"]);
 });
@@ -138,7 +149,26 @@ Route::middleware(['auth:doctor'])->group(function () {
     Route::get('/doctor_index', [DoctorController::class, 'doctor_index'])->name('doctor.index');
     Route::post('/doctor_logout', [AuthController::class, "doctorLogout"]);
 
+    //
+    Route::get('/doctor_index/allappointments', [DoctorController::class, 'viewAllAppointments']);
+    Route::get('/doctor_index/view/{id}', [DoctorController::class, 'viewPatientAppointment']);
+
+
+    // test_patien
+    Route::get('/doctor_index/testPatient/{id}', [DoctorController::class, 'testPatient']);
+
+    Route::put('/update_medicalconsultation/{id}', [DoctorController::class, 'update_medical_consultation']);
+    //store consulation
+    Route::post('/store_medicalConsultaion', [DoctorController::class, 'store_medical_consultation']);
+
+    //getMedicine
+    Route::get('/getMedicine', [DoctorController::class, 'getMedicine']);
+
+    //getNurse
+    Route::get('/getNurse', [DoctorController::class, 'getNurse']);
+    Route::get('/getNurse/{id}', [DoctorController::class, 'getNurseName']);
     // TIming
     Route::get('/doctor_timing', [DoctorController::class, 'timing']);
     Route::post('/create_timing', [TimingController::class, 'storeDoctorTiming']);
+
 });

@@ -8,7 +8,7 @@
             <div>
                 <ul>
                     <div class="mt-5">
-                        <li><a href="#"><i class="fa-solid fa-calendar-check text-blue-950 text-md"></i><span
+                        <li><a href="/patient/myappointment"><i class="fa-solid fa-calendar-check text-blue-950 text-md"></i><span
                                     class="font-semi-bold ml-5">My Apointments</span></a></li>
                     </div>
                     <div class="">

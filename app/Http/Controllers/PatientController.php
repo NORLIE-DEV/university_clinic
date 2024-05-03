@@ -66,13 +66,13 @@ class PatientController extends Controller
         // Retrieve the currently authenticated patient
         $patient = Auth::guard('patient')->user();
 
-        // Determine if the patient is associated with a student or an employee
+
         if ($patient->student) {
             $user = $patient->student;
         } elseif ($patient->employee) {
             $user = $patient->employee;
         } else {
-            // Handle the case where neither student nor employee is associated with the patient
+
             return response()->json(['error' => 'No student or employee associated with the patient'], 400);
         }
 
@@ -82,7 +82,7 @@ class PatientController extends Controller
             'start_time' => $validatedData['start_time'],
             'end_time' => $validatedData['end_time'],
             'doctor_id' => $validatedData['doctor_id'],
-            'patient_id' => $patient->id, // Use the patient's own ID
+            'patient_id' => $patient->id,
             'appointment_status' => 'booked',
             'notes' => $request->input('notes'),
             'phone_number' => $request->input('phone_number'),
@@ -138,5 +138,41 @@ class PatientController extends Controller
     public function finddoctor()
     {
         return view('patient.finddoctor');
+    }
+
+    // view myappointment
+    public function viewAppointment()
+    {
+        $patientId = Auth::id();
+        $appointments = Appointment::where('patient_id', $patientId)
+            ->where('appointment_status', 'booked')
+            ->get();
+        return view('patient.booked.appointment', compact('appointments'));
+    }
+
+
+    public function viewMyAppointment($id)
+    {
+        $viewappointment = Appointment::findOrFail($id);
+        return view('patient.booked.viewmyappointments', compact('viewappointment'));
+    }
+
+    // getdoctor
+    public function getDoctors()
+    {
+        $doctors = Doctor::select('id', 'name')->get(); 
+        return response()->json(['doctors' => $doctors]);
+    }
+
+    public function getAppointmentsByDoctor($doctorId)
+    {
+        $appointments = Appointment::where('doctor_id', $doctorId)->get();
+        return response()->json(['appointments' => $appointments]);
+    }
+
+    public function getAllAppointments()
+    {
+        $appointments = Appointment::all();
+        return response()->json(['appointments' => $appointments]);
     }
 }

@@ -31,6 +31,10 @@ class Patient extends Authenticatable
         return $this->hasMany(Medicalinformation::class);
     }
 
+    public function appointment()
+    {
+        return $this->hasOne(Appointment::class);
+    }
     public function getAuthIdentifierName()
     {
         return 'id'; // Assuming 'id' is the primary key column name

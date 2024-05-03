@@ -6,6 +6,7 @@ use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Student;
 use App\Models\Employee;
+use App\Models\Nurse;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -428,5 +429,61 @@ class SuperAdminController extends Controller
             'status' => 200,
             'message' => 'Deleted successfully!'
         ]);
+    }
+
+
+    ///////////////////////////////////////////// NURSE ///////////////////////////////
+    public function nurse()
+    {
+        $nurses = Nurse::all();
+        return view('super_admin.manage_accounts.nurse', compact('nurses'));
+    }
+
+    public function createNurse()
+    {
+        return view('super_admin.manage_accounts.createNurse');
+    }
+
+    public function store_nurse(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => "required",
+            'phone_number' => "required",
+            "email" => ['required', 'email', Rule::unique('nurses', 'email')],
+            'password' => 'required|confirmed',
+            'gender' => "required",
+            'specialties' => "required",
+            'bio' => "required",
+            'address' => "required",
+            'status' => "required",
+            'image' => "nullable",
+        ]);
+        if ($request->hasFile('image')) {
+
+            $request->validate([
+                "image" => 'mimes:jpeg,png,bmp,tiff,svg |max:4096'
+            ]);
+
+            $filenameWithExtension = $request->file("image");
+
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+
+            $extension = $request->file("image")->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
+            $smallThumbnail = $filename . '_' . time() . '.' . $extension;
+
+            $request->file('image')->storeAs('public/nurse', $filenameToStore);
+            $request->file('image')->storeAs('public/nurse/thumbnail', $smallThumbnail);
+
+            $thumbNail = 'storage/nurse/thumbnail/' . $smallThumbnail;
+
+            $this->createThumbnail($thumbNail, 150, 93);
+
+            $validated['image'] = $filenameToStore;
+        }
+        //dd($validated);
+        $validated['password'] = bcrypt($validated['password']);
+        Nurse::create($validated);
+        return redirect('/superadmin/nurse')->with('message', 'New Nurse Added Successfully!');
     }
 }

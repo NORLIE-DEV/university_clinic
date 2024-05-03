@@ -145,7 +145,9 @@
                                                         : 0;
                                             @endphp
                                             <div class="text-xl font-medium text-blue-950 m-3">
-                                                {{ $timing->start_time }} - {{ $timing->end_time }}
+                                                <i class="fa-regular fa-clock"></i>
+                                                <?php echo date('h:i A', strtotime($timing->start_time)); ?>
+                                                <?php echo date('h:i A', strtotime($timing->end_time)); ?>
                                             </div>
                                             @if (
                                                 $numSlots > 0 &&
@@ -418,8 +420,7 @@
 
                     },
                     success: function(response) {
-                        location.reload();
-                        $('#appointment_modal').hide();
+                        window.location.href = "/patient/myappointment";
                     },
                     error: function(xhr, status, error) {
                         // Handle error response

@@ -1,7 +1,6 @@
 $(document).ready(function () {
     $("#medicalHistoryForm").submit(function (e) {
         e.preventDefault();
-        alert("PISOT NA DAKULA 123");
 
         $.ajaxSetup({
             headers: {

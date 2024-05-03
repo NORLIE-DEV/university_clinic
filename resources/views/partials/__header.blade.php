@@ -36,6 +36,8 @@
 
     <link rel="stylesheet" href="{{asset('asset/js/time/jquery.timepicker.css')}}">
     <script src="{{asset('asset/js/time/jquery.timepicker.js')}}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
 
 <body>

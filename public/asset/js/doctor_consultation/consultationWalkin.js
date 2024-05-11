@@ -349,7 +349,7 @@ $(document).ready(function () {
     });
 
     //store
-    $("#medicalConsultationForm").submit(function (e) {
+    $("#medicalConsultationWalkinForm").submit(function (e) {
         // alert(2);
         e.preventDefault();
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -489,7 +489,7 @@ $(document).ready(function () {
         //  var formData = new FormData(this);
         $.ajax({
             type: "POST",
-            url: "/store_medicalConsultaion",
+            url: "/store_medicalConsultaionWalkin",
             data: formData,
             processData: false,
             contentType: false,
@@ -504,7 +504,7 @@ $(document).ready(function () {
         });
     });
 
-    $("#medicalConsultationFormUpdate").submit(function (e) {
+    $("#consultationWalkinFormUpdate").submit(function (e) {
         // alert(2);
         e.preventDefault();
         //////////////////////////////////////////////////////////////////////////////////////////
@@ -635,7 +635,7 @@ $(document).ready(function () {
         });
     });
 
-    // add dental consulation
+    // add dental consulation walkin
     $("#dentalConsultationForm").submit(function (e) {
         // alert(2);
         e.preventDefault();
@@ -695,7 +695,7 @@ $(document).ready(function () {
         //  var formData = new FormData(this);
         $.ajax({
             type: "POST",
-            url: "/store_dentalConsultaion",
+            url: "/store_dentalConsultaionWalkin",
             data: formData,
             processData: false,
             contentType: false,
@@ -710,7 +710,6 @@ $(document).ready(function () {
         });
     });
 
-    //update dental
     $("#dentalConsultationFormUpdate").submit(function (e) {
         // alert(2);
         e.preventDefault();
@@ -780,8 +779,7 @@ $(document).ready(function () {
             nurse_id_1: $("#nurse").val(),
             nurse_id_2: $("#nurse_1").val(),
             doctor_id: $("#doctor_id").val(),
-            appointment_id: $("#appointment_id").val(),
-            patient_id: $("#patient_id").val(),
+           
             medicine_issuance: JSON.stringify(medicineIssuance),
             medicine_prescription: JSON.stringify(medicinePrescription),
 
@@ -799,7 +797,7 @@ $(document).ready(function () {
 
         $.ajax({
             type: "PUT",
-            url: "/update_dentalconsultation/" + consultation_id,
+            url: "/update_dentalconsultation_walkin/" + consultation_id,
             data: JSON.stringify(data), // Convert data to JSON string
             contentType: "application/json", // Set content type to JSON
             dataType: "json",
@@ -812,5 +810,12 @@ $(document).ready(function () {
                 //alert(errorMessage);
             },
         });
+    });
+
+    $("#backButton").click(function () {
+        window.history.back();
+    });
+    $(window).on("popstate", function (event) {
+        window.location.reload();
     });
 });

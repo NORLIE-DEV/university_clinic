@@ -11,10 +11,10 @@
 
         </div>
         <div class="w-1/2">
-            <div class="flex justify-center mt-5">
+            {{-- <div class="flex justify-center mt-5">
                 <img src="https://unc.edu.ph/wp-content/uploads/2022/04/79794414_111016303724059_5940762222245445632_n-800x800.jpg"
                     class="w-16" alt="">
-            </div>
+            </div> --}}
             <div class="text-center leading-relaxed">
                 <h1 class="text-xl m-3 font-semibold text-gray-600">Sign Your Account!</h1>
                 <p class="text-xs text-gray-500">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sed, beatae.</p>

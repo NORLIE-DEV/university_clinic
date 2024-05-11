@@ -14,10 +14,13 @@ return new class extends Migration
         Schema::create('medicalconsultations', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('appointment_id')->nullable(); // Use unsignedBigInteger for regular auto-incrementing integer ID
+
             $table->foreign('appointment_id')->references('id')->on('appointments')->onDelete('cascade'); // Adjust foreign key constraint
             $table->uuid('doctor_id')->nullable(); // Define doctor_id as UUID
+
             $table->foreign('doctor_id')->references('id')->on('doctors')->onDelete('cascade'); // Add foreign key constraint
             $table->uuid('patient_id')->nullable(); // Define patient_id as UUID
+
             $table->foreign('patient_id')->references('id')->on('patients')->onDelete('cascade'); // Correct the reference to the patients table
             $table->uuid('nurse_id_1')->nullable(); // Define patient_id as UUID
             $table->foreign('nurse_id_1')->references('id')->on('nurses')->onDelete('cascade'); // Correct the reference to the patients table
@@ -59,10 +62,12 @@ return new class extends Migration
 
             //discharge summary
             $table->string('assistedBy');
-            $table->string('other_assistant');
+            $table->string('other_assistant')->nullable();
             $table->string('transfferofcare')->nullable();
             $table->string('remarks')->nullable();
             $table->string('timeout');
+
+            $table->string('consultation_method');
             $table->timestamps();
         });
     }

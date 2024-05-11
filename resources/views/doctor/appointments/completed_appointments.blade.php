@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="bg-white m-3 flex justify-between items-center shadow-xl">
-        <div class="p-3 mb-2 text-gray-500"><i class="fa-solid fa-calendar-check"></i> Todays Appointments</div>
+        <div class="p-3 mb-2 text-gray-500"><i class="fa-solid fa-calendar-check"></i> Completed Appointments</div>
         <ul class="flex m-3 text-xs">
             <li class="p-2"><a href="/doctor_index/allappointments"
                     class="p-3 bg-blue-600 text-white rounded-md shadow-md "><span><i

@@ -36,4 +36,15 @@ class Appointment extends Model
     {
         return $this->hasOne(MedicalConsultation::class);
     }
+
+    public function dentalConsultation()
+    {
+        return $this->hasOne(Dentalconsultation::class);
+    }
+
+    public function hasPassed()
+    {
+        // Assuming 'date' is the column name for the appointment date
+        return now()->toDateString() > $this->date;
+    }
 }

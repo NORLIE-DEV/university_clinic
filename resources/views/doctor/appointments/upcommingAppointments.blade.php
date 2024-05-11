@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="bg-white m-3 flex justify-between items-center shadow-xl">
-        <div class="p-3 mb-2 text-gray-500"><i class="fa-solid fa-calendar-check"></i> Todays Appointments</div>
+        <div class="p-3 mb-2 text-gray-500"><i class="fa-solid fa-calendar-check"></i> Upcomming Appointments</div>
         <ul class="flex m-3 text-xs">
             <li class="p-2"><a href="/doctor_index/allappointments"
                     class="p-3 bg-blue-600 text-white rounded-md shadow-md "><span><i
@@ -52,9 +52,7 @@
                         <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
                             Status
                         </th>
-                        <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
-                            Action
-                        </th>
+
                     </tr>
                 </thead>
 
@@ -112,12 +110,7 @@
                                         {{ $appointment->appointment_status }}</div>
                                 @endif
                             </td>
-                            <td class="px-6 py-4 border-x dark:border-neutral-600 flex justify-center border-b-2">
-                                <a href="/doctor_index/view/{{ $appointment->id }}">
-                                    <button class="text-xs p-2 bg-blue-950 rounded-md shadow-lg text-white"><i
-                                            class="fa-solid fa-users-viewfinder"></i><span> View</span></button>
-                                </a>
-                            </td>
+                           
                         </tr>
                     @empty
                     @endforelse

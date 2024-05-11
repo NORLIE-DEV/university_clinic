@@ -117,20 +117,24 @@
     </div>
 
     <div class="mx-auto bg-[#fff] border mt-5 shadow rounded-md mb-10" style="width: 95%; height:auto;">
-        <form action="#">
+         <form action="/update_appointment_status/{{$appointments->id}}" method="post" enctype="multipart/form-data">
+            @method('PUT')
+            @csrf
             <div>
                 <div class="p-3 m-4 font-medium text-gray-500">Appointment Status Update</div>
                 <div class="mx-4 px-3">
                     <label for="#" class="text-sm text-gray-400">Appointment Status</label><br>
-                    <select name="#" id="#"
+                    <select name="appointment_status" id="appointment_status"
                         class="text-xs w-full border p-3 rounded-md mt-2 text-gray-500 outline-none">
-                        <option value="booked">Booked</option>
-                        <option value="completed">Completed</option>
+                        <option value="booked"{{ $appointments->appointment_status == 'booked' ? 'selected' : '' }}>Booked</option>
+                        <option value="completed"{{ $appointments->appointment_status == 'completed' ? 'selected' : '' }}>Completed</option>
+                        <option value="cancelled"{{ $appointments->appointment_status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                        <option value="patient not available"{{ $appointments->appointment_status == 'patient not available' ? 'selected' : '' }}>Patient Not Available</option>
                     </select>
                 </div>
                 <div class="mx-4 mt-3 px-3">
-                    <label for="#" class="text-sm text-gray-400">Doctor Comment</label><br>
-                    <textarea name="#" class="outline-none w-full border text-xs p-3 text-gray-500"></textarea>
+                    <label for="notes" class="text-sm text-gray-400">Doctor Comment</label><br>
+                    <textarea name="notes" id="notes" class="outline-none w-full border text-xs p-3 text-gray-500">{{$appointments->notes}}</textarea>
                 </div>
             </div>
             <div class="flex justify-end m-5">

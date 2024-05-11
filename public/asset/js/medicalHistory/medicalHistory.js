@@ -9,6 +9,8 @@ $(document).ready(function () {
         });
         var formData = new FormData(this);
 
+      
+
         $.ajax({
             type: "POST",
             url: "/add_medicalinformation",

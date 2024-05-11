@@ -10,6 +10,7 @@ use App\Http\Controllers\NurseAdminController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\AdminPatientController;
+use App\Http\Controllers\MedicalCertificate;
 use App\Http\Controllers\PatientLoginController;
 use App\Http\Controllers\MedicineStockController;
 use App\Http\Controllers\MedicalConsultaionController;
@@ -96,7 +97,7 @@ Route::middleware(['auth:patient'])->group(function () {
 
     // get doctor
     Route::get('/patient/getDoctors', [PatientController::class, 'getDoctors']);
-    Route::get('/get-appointments/{doctorId}',[PatientController::class,'getAppointmentsByDoctor']);
+    Route::get('/get-appointments/{doctorId}', [PatientController::class, 'getAppointmentsByDoctor']);
 
     Route::post('/student_logout', [AuthController::class, "studentLogout"]);
 });
@@ -153,13 +154,39 @@ Route::middleware(['auth:doctor'])->group(function () {
     Route::get('/doctor_index/allappointments', [DoctorController::class, 'viewAllAppointments']);
     Route::get('/doctor_index/view/{id}', [DoctorController::class, 'viewPatientAppointment']);
 
+    //completed appoitments
+    Route::get('/doctor_index/completed_appointments', [DoctorController::class, 'viewCompletedAppointments']);
+    Route::get('/doctor_index/appointments_history', [DoctorController::class, 'viewHistoryAppointments']);
+    Route::get('/doctor_index/upcomming_appointments', [DoctorController::class, 'upcommingAppointments']);
 
-    // test_patien
+    // student patient
+    Route::get('/doctor_index/patient/student', [DoctorController::class, 'viewAllStudentPatients']);
+
+    Route::post('/doctor_index/search_student_patient', [DoctorController::class, 'searchStudentPatient']);
+
+    Route::put('/update_appointment_status/{id}', [DoctorController::class, 'update_appointment_status']);
+
+    // test_patient Apoointment/walkin
     Route::get('/doctor_index/testPatient/{id}', [DoctorController::class, 'testPatient']);
+    Route::get('/doctor_index/testPatientWalkin/{id}', [DoctorController::class, 'patientWalkinTest']);
+
+    Route::get('/doctor_index/testPatientWalkinDental/{id}', [DoctorController::class, 'patientWalkinTestDental']);
 
     Route::put('/update_medicalconsultation/{id}', [DoctorController::class, 'update_medical_consultation']);
-    //store consulation
+    Route::put('/update_dentalconsultation_walkin/{id}', [DoctorController::class, 'update_dental_consultation_walkin']);
+    // update patient consultation walkin
+    Route::get('/update_medicalconsultation_walkin/{id}', [DoctorController::class, 'UpdatepatientWalkinTest']);
+    Route::get('/update_dentalconsultation_walkin/{id}', [DoctorController::class, 'UpdatepatientWalkinTestDental']);
+   // Route::put('/update_medicalconsultation_walkin/{id}', [DoctorController::class, 'update_medical_consultation']);
+
+   Route::put('/update_dentalconsultation/{id}', [DoctorController::class, 'update_dental_consultation']);
+
+    //store consulation appointment
     Route::post('/store_medicalConsultaion', [DoctorController::class, 'store_medical_consultation']);
+    Route::post('/store_dentalConsultaion', [DoctorController::class, 'store_dental_consultation']);
+    //store consulation walkin
+    Route::post('/store_medicalConsultaionWalkin', [DoctorController::class, 'store_medical_consultation_walkin']);
+    Route::post('/store_dentalConsultaionWalkin', [DoctorController::class, 'store_dental_consultation_walkin']);
 
     //getMedicine
     Route::get('/getMedicine', [DoctorController::class, 'getMedicine']);
@@ -171,4 +198,6 @@ Route::middleware(['auth:doctor'])->group(function () {
     Route::get('/doctor_timing', [DoctorController::class, 'timing']);
     Route::post('/create_timing', [TimingController::class, 'storeDoctorTiming']);
 
+    Route::get('/medical_cert_sickleave_form/{id}', [MedicalCertificate::class, 'medical_sickleave_form']);
+    Route::post('/store_sickleave_data', [MedicalCertificate::class, 'store_medical_sickleave']);
 });

@@ -31,6 +31,19 @@ class Patient extends Authenticatable
         return $this->hasMany(Medicalinformation::class);
     }
 
+    public function medicalconsultationInfo()
+    {
+        return $this->hasMany(Medicalconsultation::class);
+    }
+
+    public function dentalconsultationInfo()
+    {
+        return $this->hasMany(Dentalconsultation::class);
+    }
+    public function sickleavemedicalcertificate()
+    {
+        return $this->hasMany(Sickleavemedicalcertificates::class);
+    }
     public function appointment()
     {
         return $this->hasOne(Appointment::class);

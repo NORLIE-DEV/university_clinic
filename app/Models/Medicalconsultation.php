@@ -37,7 +37,8 @@ class Medicalconsultation extends Model
         'other_assistant',
         'transfferofcare',
         'remarks',
-        'timeout'
+        'timeout',
+        'consultation_method'
     ];
 
     protected $casts = [

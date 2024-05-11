@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="bg-white m-3 flex justify-between items-center shadow-xl">
-        <div class="p-3 mb-2 text-gray-500"><i class="fa-solid fa-calendar-check"></i> Todays Appointments</div>
+        <div class="p-3 mb-2 text-gray-500"><i class="fa-solid fa-calendar-check"></i> Appointments History</div>
         <ul class="flex m-3 text-xs">
             <li class="p-2"><a href="/doctor_index/allappointments"
                     class="p-3 bg-blue-600 text-white rounded-md shadow-md "><span><i
@@ -60,7 +60,7 @@
 
                 <!-- Table body -->
                 <tbody>
-                    @forelse ($appointments as $appointment)
+                    @forelse ($history_appointments as $appointment)
                         <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-600">
                             <th scope="row" class="px-6 py-4 border-x dark:border-neutral-600 text-left border-b-2">
                                 {{ $appointment->id }}

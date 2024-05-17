@@ -23,7 +23,11 @@ class DoctorController extends Controller
     {
         $doctorId = Auth::id();
         $doctor = Doctor::find($doctorId);
-        return view('doctor.doctor_index', ["doctor" => $doctor]);
+        $appointmentCount = $doctor->appointments()->count();
+        $upcommingappointmentCount = $doctor->appointments()
+            ->where('date', '>', now())
+            ->count();
+        return view('doctor.doctor_index', ["doctor" => $doctor, "appointmentCount" => $appointmentCount, "upcommingappointmentCount" => $upcommingappointmentCount]);
     }
 
     public function timing()
@@ -262,8 +266,9 @@ class DoctorController extends Controller
             $medicalconsultationInfo = $studentPatient->medicalconsultationInfo;
             $dentalconsultationInfo = $studentPatient->dentalconsultationInfo;
             $sickleavemedicalcertificate = $studentPatient->sickleavemedicalcertificate;
+            $activitiescalcertificate = $studentPatient->activitiescalcertificate;
 
-            return view('doctor.patients.search_result', ["studentPatient" => $studentPatient, "medicalInfo" => $medicalInfo, "medicalconsultationInfo" => $medicalconsultationInfo, "dentalconsultationInfo" => $dentalconsultationInfo, "doctor" => $doctor,"sickleavemedicalcertificate"=>$sickleavemedicalcertificate]);
+            return view('doctor.patients.search_result', ["studentPatient" => $studentPatient, "medicalInfo" => $medicalInfo, "medicalconsultationInfo" => $medicalconsultationInfo, "dentalconsultationInfo" => $dentalconsultationInfo, "doctor" => $doctor, "sickleavemedicalcertificate" => $sickleavemedicalcertificate, "activitiescalcertificate" => $activitiescalcertificate]);
         } else {
             $errorMessage = "Patient not found.";
             return view('doctor.patients.search_patient')->with('errorMessage', $errorMessage);

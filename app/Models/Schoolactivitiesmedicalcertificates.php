@@ -5,21 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Sickleavemedicalcertificates extends Model
+class Schoolactivitiesmedicalcertificates extends Model
 {
     use HasFactory;
-
     protected $fillable = [
         'certificateID',
         'doctor_id',
         'patient_id',
-        'absent_from',
-        'absent_to',
-        'number_days_absent',
-        'date_issue',
-        'reason',
+        'activity',
+        'blood_pressure',
+        'respiratory_rate',
+        'pulse_rate',
+        'height',
+        'weight',
         'findings',
-        'remarks',
+        'recomendations',
+        'date_issue',
     ];
 
     public function patient()

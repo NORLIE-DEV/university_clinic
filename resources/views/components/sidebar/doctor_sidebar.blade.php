@@ -20,7 +20,7 @@
             <a href="/doctor_index/patient/student" class="text-white"><i class="fa-solid fa-bed p-4"></i><span>Patient</span></a>
         </li>
         <li class="w-full hover:bg-[#00ACBA] duration-300 mt-2">
-            <a href="#" class="text-white"><i class="fa-solid fa-calendar-days p-4"></i><span>Timings</span></a>
+            <a href="/doctor_timing" class="text-white"><i class="fa-solid fa-calendar-days p-4"></i><span>Timings</span></a>
         </li>
         <li class="w-full hover:bg-[#00ACBA] duration-300 mt-2">
             <a href="#" class="text-white"><i class="fa-solid fa-address-card p-4"></i><span>Profile</span></a>

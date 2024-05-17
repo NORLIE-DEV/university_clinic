@@ -44,6 +44,10 @@ class Patient extends Authenticatable
     {
         return $this->hasMany(Sickleavemedicalcertificates::class);
     }
+    public function activitiescalcertificate()
+    {
+        return $this->hasMany(Schoolactivitiesmedicalcertificates::class);
+    }
     public function appointment()
     {
         return $this->hasOne(Appointment::class);

@@ -34,23 +34,36 @@
             </div>
             <div class="flex justify-between items-center m-5">
                 <div class="w-1/2 px-5 p-2">
-                    <label for="absent_from" class="text-sm text-gray-500">Absent From</label><br>
-                    <input type="date" name="absent_from" id="absent_from" class="text-xs p-2.5 w-full border mt-2">
+                    <label for="blood_pressure" class="text-sm text-gray-500">Blood Pressure</label><br>
+                    <input type="number" name="blood_pressure" id="blood_pressure"
+                        class="text-xs p-2.5 w-full border mt-2">
                 </div>
                 <div class="w-1/2 px-5 p-2">
-                    <label for="absent_to" class="text-sm text-gray-500">Absent To</label><br>
-                    <input type="date" name="absent_to" id="absent_to" class="w-full text-xs p-2.5 border mt-2">
+                    <label for="respiratory_rate" class="text-sm text-gray-500">Respiratory Rate</label><br>
+                    <input type="number" name="respiratory_rate" id="respiratory_rate"
+                        class="w-full text-xs p-2.5 border mt-2">
                 </div>
                 <div class="w-1/2 px-5 p-2">
-                    <label for="number_days_absent" class="text-sm text-gray-500">Number Days of Absent</label><br>
-                    <input type="number" name="number_days_absent" id="number_days_absent"
+                    <label for="pulse_rate" class="text-sm text-gray-500">Pulse Rate</label><br>
+                    <input type="number" name="pulse_rate" id="pulse_rate"
                         class="outline-none w-full text-xs p-2.5 border mt-2" min="1">
                 </div>
             </div>
+            <div class="flex justify-between items-center m-5">
+                <div class="w-1/2 px-5 p-2">
+                    <label for="height" class="text-sm text-gray-500">Height</label><br>
+                    <input type="number" name="height" id="height" class="text-xs p-2.5 w-full border mt-2">
+                </div>
+                <div class="w-1/2 px-5 p-2">
+                    <label for="weight" class="text-sm text-gray-500">Weight</label><br>
+                    <input type="number" name="weight" id="weight" class="w-full text-xs p-2.5 border mt-2">
+                </div>
+
+            </div>
             <div class="flex justify-between items-center mx-5">
                 <div class="px-5 p-2 w-full">
-                    <label for="reason" class="text-sm text-gray-500">Reason of Absence</label><br>
-                    <textarea name="reason" id="reason" class="outline-none border w-full p-3 text-xs mt-2 h-32"></textarea>
+                    <label for="activity" class="text-sm text-gray-500">Activity</label><br>
+                    <textarea name="activity" id="activity" class="outline-none border w-full p-3 text-xs mt-2 h-32"></textarea>
                 </div>
             </div>
             <div class="flex justify-between items-center mx-5">
@@ -61,8 +74,8 @@
             </div>
             <div class="flex justify-between items-center mx-5">
                 <div class="px-5 p-2 w-full">
-                    <label for="remarks" class="text-sm text-gray-500">Remarks</label><br>
-                    <textarea name="remarks" id="remarks" class="outline-none border w-full p-3 text-xs mt-2 h-32"></textarea>
+                    <label for="recomendations" class="text-sm text-gray-500">Recomendations</label><br>
+                    <textarea name="recomendations" id="recomendations" class="outline-none border w-full p-3 text-xs mt-2 h-32"></textarea>
                 </div>
             </div>
             <div class="px-5 mt-5 hidden">
@@ -115,7 +128,7 @@
                 console.log(formData);
                 $.ajax({
                     type: "POST",
-                    url: "/store_sickleave_data",
+                    url: "/store_activities_data",
                     data: formData,
                     processData: false,
                     contentType: false,

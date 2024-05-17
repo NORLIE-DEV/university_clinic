@@ -64,7 +64,7 @@
                     <li id="tab-1" class="tab flex-1 text-center py-2 cursor-pointer active-tab">Patient Information
                     </li>
                     <li id="tab-2" class="tab flex-1 text-center py-2 cursor-pointer ">Medical Information</li>
-                    <li id="tab-3" class="tab flex-1 text-center py-2 cursor-pointer ">Consultat ion History</li>
+                    <li id="tab-3" class="tab flex-1 text-center py-2 cursor-pointer ">Consultation History</li>
                     @if ($doctor->department == 'physician')
                         <li id="tab-4" class="tab flex-1 text-center py-2 cursor-pointer ">Medical Certificate</li>
                     @endif
@@ -738,14 +738,9 @@
                                     <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
                                         Certificate No
                                     </th>
+
                                     <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
-                                        Absent From
-                                    </th>
-                                    <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
-                                        Absent TO
-                                    </th>
-                                    <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
-                                       Date Issue
+                                        Date Issue
                                     </th>
                                     <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
                                         Action
@@ -760,21 +755,70 @@
                                             class="px-6 py-4 border-x dark:border-neutral-600 text-left border-b-2">
                                             {{ $cert->certificateID }}
                                         </th>
-                                        <th scope="row"
-                                            class="px-6 py-4 border-x dark:border-neutral-600 text-left border-b-2">
-                                            {{ $cert->absent_from }}
-                                        </th>
-                                        <th scope="row"
-                                            class="px-6 py-4 border-x dark:border-neutral-600 text-left border-b-2">
-                                            {{ $cert->absent_to }}
-                                        </th>
+
                                         <th scope="row"
                                             class="px-6 py-4 border-x dark:border-neutral-600 text-left border-b-2">
                                             {{ $cert->date_issue }}
                                         </th>
                                         <th scope="row"
                                             class="px-6 py-4 border-x dark:border-neutral-600 text-left border-b-2">
-                                           <a href="#">Print</a>
+                                            <a href="/generate-pdf/{{ $cert->id }}"><i
+                                                    class="fa-solid fa-print"></i>Print</a>
+                                        </th>
+
+                                    </tr>
+                                @endforeach
+                            </tbody>
+
+                        </table>
+
+                    </div>
+                    <hr class="py-5 mt-5">
+                    <div>
+                        <div class="flex justify-between m-3 items-center">
+                            <div class="py-5 font-medium text-gray-500">
+                                Medical Certificate <span>(School Activities)</span>
+                            </div>
+                            <div>
+                                <a href="/medical_cert_activities_form/{{ $studentPatient->id }}"
+                                    class="text-xs p-2 bg-blue-950 text-white">Add Certificate</a>
+                            </div>
+                        </div>
+                        <table class="min-w-full border text-left text-xs shadow-xl whitespace-nowrap tableContainer"
+                            id="schoolActivitiesTableCert">
+
+                            <!-- Table head -->
+                            <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 border-t ">
+                                <tr class="text-[#00ACBA]">
+                                    <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
+                                        Certificate No
+                                    </th>
+
+                                    <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
+                                        Date Issue
+                                    </th>
+                                    <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">
+                                        Action
+                                    </th>
+                                </tr>
+                            </thead>
+                            <!-- Table body -->
+                            <tbody>
+                                @foreach ($activitiescalcertificate as $cert)
+                                    <tr>
+                                        <th scope="row"
+                                            class="px-6 py-4 border-x dark:border-neutral-600 text-left border-b-2">
+                                            {{ $cert->certificateID }}
+                                        </th>
+
+                                        <th scope="row"
+                                            class="px-6 py-4 border-x dark:border-neutral-600 text-left border-b-2">
+                                            {{ $cert->date_issue }}
+                                        </th>
+                                        <th scope="row"
+                                            class="px-6 py-4 border-x dark:border-neutral-600 text-left border-b-2">
+                                            <a href="/generate-pdf/school_activities_certificate/{{ $cert->id }}"><i
+                                                    class="fa-solid fa-print"></i>Print</a>
                                         </th>
 
                                     </tr>
@@ -785,6 +829,8 @@
 
                     </div>
                 </div>
+
+
             </div>
         </div>
     </div>
@@ -798,6 +844,7 @@
         $(document).ready(function() {
 
             $("#sickleaveTable").dataTable();
+            $("#schoolActivitiesTableCert").dataTable();
 
             $("#constultationHistoryTable").dataTable();
             $(".tab").click(function() {

@@ -1,21 +1,22 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PdfController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\TimingController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\MedicalCertificate;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\SupplierController;
 use App\Http\Controllers\NurseAdminController;
 use App\Http\Controllers\SuperAdminController;
 use App\Http\Controllers\ExcelImportController;
 use App\Http\Controllers\AdminPatientController;
-use App\Http\Controllers\MedicalCertificate;
 use App\Http\Controllers\PatientLoginController;
 use App\Http\Controllers\MedicineStockController;
 use App\Http\Controllers\MedicalConsultaionController;
-use App\Http\Controllers\TimingController;
-
+use Barryvdh\DomPDF\Facade\Pdf;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -200,4 +201,10 @@ Route::middleware(['auth:doctor'])->group(function () {
 
     Route::get('/medical_cert_sickleave_form/{id}', [MedicalCertificate::class, 'medical_sickleave_form']);
     Route::post('/store_sickleave_data', [MedicalCertificate::class, 'store_medical_sickleave']);
+
+    Route::get('/medical_cert_activities_form/{id}', [MedicalCertificate::class, 'medical_activities_form']);
+    Route::post('/store_activities_data', [MedicalCertificate::class, 'store_medical_activities']);
+
+    Route::get('/generate-pdf/{id}', [PdfController::class, 'generateMedicalCertificate']);
+    Route::get('/generate-pdf/school_activities_certificate/{id}', [PdfController::class, 'generateMedicalCertificateSchoolActivities']);
 });

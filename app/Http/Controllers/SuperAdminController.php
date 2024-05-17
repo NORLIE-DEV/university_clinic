@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dentalconsultation;
+use App\Models\Nurse;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Student;
 use App\Models\Employee;
-use App\Models\Nurse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
+use App\Models\Medicalconsultation;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
 
@@ -18,9 +21,77 @@ class SuperAdminController extends Controller
 {
     public function superadmin_index()
     {
-        return view('super_admin.super_admin_index');
+        // Example data for the chart
+        $data = [
+            ['Category', 'Total Count', ['role' => 'style']],
+            ['Walk-ins', Medicalconsultation::where('consultation_method', 'Walk In')->count(), '#3366cc'],
+            ['Appointments', Medicalconsultation::where('consultation_method', 'Appointment')->count(), '#dc3912'],
+        ];
+
+        $data_1 = [
+            ['User', 'Types'],
+            ['Student', Student::count()],
+            ['Employee', Employee::count()],
+            ['Doctor', Doctor::count()]
+        ];
+
+        $data_2 = [
+            ['Category', 'Total Count', ['role' => 'style']],
+            ['Walk-ins', Dentalconsultation::where('consultation_method', 'Walk In')->count(), '#3366cc'],
+            ['Appointments', Dentalconsultation::where('consultation_method', 'Appointment')->count(), '#dc3912'],
+        ];
+
+        // Convert data to JSON for use in the view
+        $chartData = json_encode($data);
+        $pieChartData = json_encode($data_1);
+        $chartDataDental = json_encode($data_2);
+
+        $countDoctor = Doctor::all()->count();
+        $countPatient = Patient::all()->count();
+        $countStudent = Student::all()->count();
+        $countEmployee = Employee::all()->count();
+
+        // Pass the data to the view
+        return view('super_admin.super_admin_index', compact('chartData', 'pieChartData', 'countDoctor', 'countPatient', 'countStudent', 'countEmployee', 'chartDataDental'));
     }
 
+    public function getMedicalConsultationData(Request $request)
+    {
+        $selectedDate = $request->input('date');
+        $selectedDate = Carbon::parse($selectedDate);
+        $walkinsCount = MedicalConsultation::whereDate('created_at', $selectedDate)
+            ->where('consultation_method', 'Walk In')
+            ->count();
+        $appointmentsCount = MedicalConsultation::whereDate('created_at', $selectedDate)
+            ->where('consultation_method', 'Appointment')
+            ->count();
+        $data = [
+            ['Category', 'Total Count', ['role' => 'style']], // Add an extra column for colors
+            ['Walk-ins', $walkinsCount, '#3366cc'], // Specify color for Walk-ins
+            ['Appointments', $appointmentsCount, '#dc3912'], // Specify color for Appointments
+        ];
+
+        return response()->json($data);
+    }
+
+    public function getDentalConsultationData(Request $request)
+    {
+        $selectedDate = $request->input('date');
+        $selectedDate = Carbon::parse($selectedDate);
+        $walkinsCount = Dentalconsultation::whereDate('created_at', $selectedDate)
+            ->where('consultation_method', 'Walk In')
+            ->count();
+        $appointmentsCount = MedicalConsultation::whereDate('created_at', $selectedDate)
+            ->where('consultation_method', 'Appointment')
+            ->count();
+        $data = [
+            ['Category', 'Total Count', ['role' => 'style']], // Add an extra column for colors
+            ['Walk-ins', $walkinsCount, '#3366cc'], // Specify color for Walk-ins
+            ['Appointments', $appointmentsCount, '#dc3912'], // Specify color for Appointments
+        ];
+
+        return response()->json($data);
+    }
 
     // PATIENT
     public function superadmin_patient()

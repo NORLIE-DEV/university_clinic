@@ -38,6 +38,7 @@
     <script src="{{asset('asset/js/time/jquery.timepicker.js')}}"></script>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 </head>
 
 <body>

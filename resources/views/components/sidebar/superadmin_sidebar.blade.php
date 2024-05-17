@@ -1,4 +1,4 @@
-<div class="bg-gray-800 sticky top-0" style="width: 15%; height:100vh;">
+<div class="bg-gray-800 sticky top-0" style="width: 18%; height:100vh;">
     <div class="flex justify-center">
         <div class="m-3 text-2xl flex p-2 items-center">
             <i class="fa-solid fa-house-medical-flag m-1 text-[#00ACBA]"></i>
@@ -19,15 +19,15 @@
                     class="fa-solid fa-calendar-check p-4"></i><span>Patients</span></a>
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
-            <a href="/superadmin/student" class="text-white"><i
-                    class="fa-solid fa-bed p-4"></i><span>Student</span></a>
+            <a href="/superadmin/student" class="text-white"><i class="fa-solid fa-bed p-4"></i><span>Student</span></a>
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
             <a href="/doctor_timing" class="text-white"><i
                     class="fa-solid fa-calendar-days p-4"></i><span>Employee</span></a>
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
-            <a href="#" class="text-white"><i class="fa-solid fa-address-card p-4"></i><span>Doctor</span></a>
+            <a href="/superadmin/doctor" class="text-white"><i
+                    class="fa-solid fa-address-card p-4"></i><span>Doctor</span></a>
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
             <a href="#" class="text-white"><i class="fa-solid fa-key p-4"></i><span>Change Password</span></a>

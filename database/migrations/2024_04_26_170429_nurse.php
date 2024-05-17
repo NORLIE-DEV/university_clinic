@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('nurses', function (Blueprint $table) {
-            $table->string('id')->unique()->nullable();
+            $table->uuid('id')->primary(); // Use UUID as primary key
+            // Add other columns
             $table->string('name', 25);
             $table->string('phone_number', 15);
             $table->string('email', 25)->unique();
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestamps();
         });
+
     }
 
     /**
@@ -33,6 +35,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('nurses');
     }
 };

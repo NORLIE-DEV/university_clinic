@@ -159,6 +159,7 @@ return [
         /*
          * Package Service Providers...
          */
+        ArielMejiaDev\LarapexCharts\LarapexChartsServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         /*

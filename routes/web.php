@@ -39,6 +39,8 @@ Route::post('/login/process', [AuthController::class, 'login']);
 
 ///////////////////////////// SUPERADMIN  ///////////////////////////////
 Route::get('/superadmin', [SuperAdminController::class, 'superadmin_index']);
+Route::get('/getMedicalConsultationData', [SuperAdminController::class, 'getMedicalConsultationData']);
+Route::get('/getDentalConsultationData', [SuperAdminController::class, 'getDentalConsultationData']);
 
 Route::get('/superadmin/student', [SuperAdminController::class, 'superadmin_student']);
 Route::get('/superadmin/addstudent', [SuperAdminController::class, 'addStudent']);

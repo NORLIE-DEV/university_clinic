@@ -58,6 +58,7 @@ class EmployeeImportClass implements ToCollection
                 'emergency_contact_name' => $row[15],
                 'emergency_contact_number' => $row[16],
                 'emergency_contact_address' => $row[17],
+                
             ]);
 
             // Save the patient to the database

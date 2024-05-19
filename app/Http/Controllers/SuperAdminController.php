@@ -13,6 +13,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Models\Medicalconsultation;
+use App\Models\Superadmin;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Session;
 
@@ -21,11 +22,12 @@ class SuperAdminController extends Controller
 {
     public function superadmin_index()
     {
+        $currentDate = Carbon::now()->toDateString();
         // Example data for the chart
         $data = [
             ['Category', 'Total Count', ['role' => 'style']],
-            ['Walk-ins', Medicalconsultation::where('consultation_method', 'Walk In')->count(), '#3366cc'],
-            ['Appointments', Medicalconsultation::where('consultation_method', 'Appointment')->count(), '#dc3912'],
+            ['Walk-ins', Medicalconsultation::where('consultation_method', 'Walk In')->whereDate('created_at', $currentDate)->count(), '#333'],
+            ['Appointments', Medicalconsultation::where('consultation_method', 'Appointment')->whereDate('created_at', $currentDate)->count(), '#dc3912'],
         ];
 
         $data_1 = [
@@ -37,8 +39,8 @@ class SuperAdminController extends Controller
 
         $data_2 = [
             ['Category', 'Total Count', ['role' => 'style']],
-            ['Walk-ins', Dentalconsultation::where('consultation_method', 'Walk In')->count(), '#3366cc'],
-            ['Appointments', Dentalconsultation::where('consultation_method', 'Appointment')->count(), '#dc3912'],
+            ['Walk-ins', Dentalconsultation::where('consultation_method', 'Walk In')->whereDate('created_at', $currentDate)->count(), '#3366cc'],
+            ['Appointments', Dentalconsultation::where('consultation_method', 'Appointment')->whereDate('created_at', $currentDate)->count(), '#dc3912'],
         ];
 
         // Convert data to JSON for use in the view
@@ -96,7 +98,8 @@ class SuperAdminController extends Controller
     // PATIENT
     public function superadmin_patient()
     {
-        return view('super_admin.patient');
+        $patients = Patient::all();
+        return view('super_admin.patient', compact('patients'));
     }
 
     public function student_patient()
@@ -278,10 +281,17 @@ class SuperAdminController extends Controller
 
             $validated['image'] = $filenameToStore;
         }
+        // dd($validated);
 
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
+            $validated['password'] = bcrypt($validated['password']);
+        }
 
-        $validated['password'] = bcrypt($validated['password']);
         $student->update($validated);
+
+
         return redirect('/superadmin/student')->with('updateSuccess', true);
     }
     function checkStudentID(Request $request)
@@ -329,7 +339,70 @@ class SuperAdminController extends Controller
         $employees = Employee::all();
         return view('super_admin.employee', compact('employees'));
     }
+    public function edit_Employee($id)
+    {
+        $employees = Employee::findOrFail($id);
+        return view('super_admin.employee.update_employee', ["employees" => $employees]);
+    }
+    public function update_employee(Request $request, Employee $employee)
+    {
+        //dd($request);
+        $validated = $request->validate([
+            // 'id' => ["required", Rule::unique('students', 'id')],
+            'first_name' => "required",
+            'middle_name' => "required",
+            'last_name' => "required",
+            'gender' => "required",
+            'civil_status' => "required",
+            'date_of_birth' => 'required|date',
+            'birth_place' => "required",
+            'permanent_address' => "required",
+            'contact_number' => "required",
+            // "email" => ['required', 'email', Rule::unique('students', 'email')],
+            'password' => 'nullable|confirmed', // 'password_confirmation' field must match 'password'
+            'employee_department' => "required",
+            'employee_position' => "required",
+            'emergency_contact_name' => "required",
+            'emergency_contact_number' => "required",
+            'emergency_contact_address' => "required",
+            'status' => "required",
+            'image' => "nullable",
+        ]);
+        //   dd($validated);
+        // dd($request);
+        if ($request->hasFile('image')) {
 
+            $request->validate([
+                "image" => 'mimes:jpeg,png,bmp,tiff,svg |max:4096'
+            ]);
+
+            $filenameWithExtension = $request->file("image");
+
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+
+            $extension = $request->file("image")->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
+            $smallThumbnail = $filename . '_' . time() . '.' . $extension;
+
+            $request->file('image')->storeAs('public/employee', $filenameToStore);
+            $request->file('image')->storeAs('public/employee/thumbnail', $smallThumbnail);
+
+            $thumbNail = 'storage/employee/thumbnail/' . $smallThumbnail;
+
+            $this->createThumbnail($thumbNail, 150, 93);
+
+            $validated['image'] = $filenameToStore;
+        }
+
+
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
+            $validated['password'] = bcrypt($validated['password']);
+        }
+        $employee->update($validated);
+        return redirect('/superadmin/employee')->with('updateSuccess', true);
+    }
 
 
 
@@ -467,7 +540,11 @@ class SuperAdminController extends Controller
 
             $validated['image'] = $filenameToStore;
         }
-        $validated['password'] = bcrypt($validated['password']);
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
+            $validated['password'] = bcrypt($validated['password']);
+        }
         $doctor->update($validated);
         return redirect('/superadmin/doctor')->with('updateSuccess', true);
     }
@@ -556,5 +633,156 @@ class SuperAdminController extends Controller
         $validated['password'] = bcrypt($validated['password']);
         Nurse::create($validated);
         return redirect('/superadmin/nurse')->with('message', 'New Nurse Added Successfully!');
+    }
+    public function edit_nurse($id)
+    {
+        $nurses = Nurse::findOrFail($id);
+        return view('super_admin.manage_accounts.update_nurse', ["nurses" => $nurses]);
+    }
+    public function update_nurse(Request $request, Nurse $nurse)
+    {
+        //dd($request);
+        $validated = $request->validate([
+            'name' => "required",
+            'phone_number' => "required",
+            // "email" => ['required', 'email', Rule::unique('nurses', 'email')],
+            'password' => 'nullable|confirmed',
+            'gender' => "required",
+            'specialties' => "required",
+            'bio' => "required",
+            'address' => "required",
+            'status' => "required",
+            'image' => "nullable",
+        ]);
+        if ($request->hasFile('image')) {
+
+            $request->validate([
+                "image" => 'mimes:jpeg,png,bmp,tiff,svg |max:4096'
+            ]);
+
+            $filenameWithExtension = $request->file("image");
+
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+
+            $extension = $request->file("image")->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
+            $smallThumbnail = $filename . '_' . time() . '.' . $extension;
+
+            $request->file('image')->storeAs('public/nurse', $filenameToStore);
+            $request->file('image')->storeAs('public/nurse/thumbnail', $smallThumbnail);
+
+            $thumbNail = 'storage/nurse/thumbnail/' . $smallThumbnail;
+
+            $this->createThumbnail($thumbNail, 150, 93);
+
+            $validated['image'] = $filenameToStore;
+        }
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
+            $validated['password'] = bcrypt($validated['password']);
+        }
+        $nurse->update($validated);
+        return redirect('/superadmin/nurse')->with('updateSuccess', 'New Nurse Added Successfully!');
+    }
+
+    public function superadmin_accounts()
+    {
+        $supperadmin_accounts = Superadmin::all();
+        return view('super_admin.manage_accounts.accounts_superadmin.superadmin', compact('supperadmin_accounts'));
+    }
+
+    public function createSuperadmin()
+    {
+        return view('super_admin.manage_accounts.accounts_superadmin.addsuperadmin');
+    }
+
+    public function store_superadmin(Request $request)
+    {
+        $validated = $request->validate([
+            'name' => "required",
+            'phonenumber' => "required",
+            "email" => ['required', 'email', Rule::unique('superadmins', 'email')],
+            'password' => 'required|confirmed',
+            'gender' => "required",
+            'birthdate' => "required",
+            'status' => "required",
+            'image' => "nullable",
+        ]);
+        if ($request->hasFile('image')) {
+
+            $request->validate([
+                "image" => 'mimes:jpeg,png,bmp,tiff,svg |max:4096'
+            ]);
+
+            $filenameWithExtension = $request->file("image");
+
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+
+            $extension = $request->file("image")->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
+            $smallThumbnail = $filename . '_' . time() . '.' . $extension;
+
+            $request->file('image')->storeAs('public/superadmin', $filenameToStore);
+            $request->file('image')->storeAs('public/superadmin/thumbnail', $smallThumbnail);
+
+            $thumbNail = 'storage/superadmin/thumbnail/' . $smallThumbnail;
+
+            $this->createThumbnail($thumbNail, 150, 93);
+
+            $validated['image'] = $filenameToStore;
+        }
+        //dd($validated);
+        $validated['password'] = bcrypt($validated['password']);
+        Superadmin::create($validated);
+        return redirect('/superadmin/manageaccounts')->with('message', 'New Superadmin Added Successfully!');
+    }
+    public function edit_superadmin($id)
+    {
+        $superadmin = Superadmin::findOrFail($id);
+        return view('super_admin.manage_accounts.accounts_superadmin.update_superadmin', ["superadmin" => $superadmin]);
+    }
+    public function update_superadmin(Request $request, Superadmin $superadmin)
+    {
+        $validated = $request->validate([
+            'name' => "required",
+            'phonenumber' => "required",
+            // "email" => ['required', 'email', Rule::unique('superadmins', 'email')],
+            'password' => 'nullable|confirmed',
+            'gender' => "required",
+            'birthdate' => "required",
+            'status' => "required",
+            'image' => "nullable",
+        ]);
+        if ($request->hasFile('image')) {
+
+            $request->validate([
+                "image" => 'mimes:jpeg,png,bmp,tiff,svg |max:4096'
+            ]);
+
+            $filenameWithExtension = $request->file("image");
+
+            $filename = pathinfo($filenameWithExtension, PATHINFO_FILENAME);
+
+            $extension = $request->file("image")->getClientOriginalExtension();
+            $filenameToStore = $filename . '_' . time() . '.' . $extension;
+            $smallThumbnail = $filename . '_' . time() . '.' . $extension;
+
+            $request->file('image')->storeAs('public/superadmin', $filenameToStore);
+            $request->file('image')->storeAs('public/superadmin/thumbnail', $smallThumbnail);
+
+            $thumbNail = 'storage/superadmin/thumbnail/' . $smallThumbnail;
+
+            $this->createThumbnail($thumbNail, 150, 93);
+
+            $validated['image'] = $filenameToStore;
+        }
+        if (empty($validated['password'])) {
+            unset($validated['password']);
+        } else {
+            $validated['password'] = bcrypt($validated['password']);
+        }
+        $superadmin->update($validated);
+        return redirect('/superadmin/manageaccounts')->with('updatesuccess', 'New Superadmin Added Successfully!');
     }
 }

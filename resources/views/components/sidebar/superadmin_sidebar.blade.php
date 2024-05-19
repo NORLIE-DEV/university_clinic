@@ -16,21 +16,27 @@
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
             <a href="/superadmin/patient" class="text-white"><i
-                    class="fa-solid fa-calendar-check p-4"></i><span>Patients</span></a>
+                    class="fa-solid fa-bed p-4"></i><span>Patients</span></a>
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
-            <a href="/superadmin/student" class="text-white"><i class="fa-solid fa-bed p-4"></i><span>Student</span></a>
+            <a href="/superadmin/student" class="text-white"><i
+                    class="fa-solid fa-graduation-cap p-4"></i><span>Student</span></a>
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
-            <a href="/doctor_timing" class="text-white"><i
-                    class="fa-solid fa-calendar-days p-4"></i><span>Employee</span></a>
+            <a href="/superadmin/employee" class="text-white"><i
+                    class="fa-solid fa-users p-4"></i><span>Employee</span></a>
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
             <a href="/superadmin/doctor" class="text-white"><i
                     class="fa-solid fa-address-card p-4"></i><span>Doctor</span></a>
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
-            <a href="#" class="text-white"><i class="fa-solid fa-key p-4"></i><span>Change Password</span></a>
+            <a href="/superadmin/nurse" class="text-white"><i
+                    class="fa-solid fa-user-nurse p-4"></i><span>Nurse</span></a>
+        </li>   
+        <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
+            <a href="/superadmin/manageaccounts" class="text-white"><i class="fa-solid fa-user p-4"></i><span>Manage
+                    Accounts</span></a>
         </li>
         <li class="w-full hover:bg-[#5a5b5b] duration-300 mt-2">
             <a href="#" class="text-white"><i class="fa-solid fa-gear p-4"></i><span>Settings</span></a>

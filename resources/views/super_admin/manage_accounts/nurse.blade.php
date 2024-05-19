@@ -1,6 +1,17 @@
 @extends('layout.superadmin_layout')
 
 @section('content')
+    @if (session('updateSuccess'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Nurse Update Successful',
+                text: 'Sucessfully Update',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     <div class="bg-white border rounded-2xl shadow-xl m-4 ml-2" style="width:98%; height:auto;">
         <div class="mt-2 items-center w-full p-4 flex justify-between">
             <h1 class="text-xl font-medium text-gray-600">Nurse List</h1>
@@ -12,7 +23,8 @@
             <div class="">
                 <table id="doctorTable" class="w-full text-left text-xs whitespace-nowrap p-1 border-collapse">
                     <!-- Table head -->
-                    <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 border-t text-xs">
+                    <thead
+                        class="uppercase tracking-wider bg-gray-700 text-white border-b-2 dark:border-neutral-600 border-t text-xs">
                         <tr>
 
                             <th scope="col" class="border dark:border-neutral-600 border-gray-300 text-center">
@@ -37,7 +49,7 @@
                         </tr>
                     </thead>
 
-                    <tbody class="text-sm">
+                    <tbody class="text-xs">
                         @forelse ($nurses as $nurse)
                             <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-300">
                                 <th scope="row"
@@ -59,26 +71,23 @@
                                 </th>
                                 <th
                                     scope="row"class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight
-                                                                                                                                                                                                            @if ($nurse->status === 'active') bg-green-500
+                                                                                                                                                                                                                                @if ($nurse->status === 'active') bg-green-500
                                             @else bg-red-500 @endif
-                                                                                                                                                                                                            text-center text-white">
+                                                                                                                                                                                                                                text-center text-white">
                                     {{ $nurse->status }}
                                 </th>
 
 
                                 <th scope="row"
                                     class="px-2 py-2 border dark:border-neutral-600 border-gray-300 text-center">
-                                    <a href="/updatedoctor/{{ $nurse->id }}" id="update-doctor">
+                                    <a href="/updatednurse/{{ $nurse->id }}" id="update-doctor">
                                         <button
                                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"><i
                                                 class="fa-solid fa-pen-to-square"></i></button></a>
-                                    <button
-                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"
-                                        id="delete_doctor" value="{{ $nurse->id }}"><i
-                                            class="fa-solid fa-trash"></i></button>
-                                    <button
-                                        class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-2 rounded text-xs"><i
-                                            class="fa-solid fa-users-viewfinder"></i></button>
+                                    <button onclick="confirmDelete('nurse', '{{ $nurse->id }}')"
+                                        class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
                                 </th>
                             </tr>
                         @empty
@@ -93,63 +102,79 @@
             </div>
         </div>
     </div>
-
-
-    {{-- ADD SUCCESS --}}
-    <div class="fixed z-50 inset-0 hidden" id="addSuccess">
-        <div class="fixed inset-0 bg-gray-500 opacity-40" id="add_overlay"></div>
-        <div class="bg-white rounded m-auto fixed inset-0 z-10 " style="max-height:250px; width:500px">
-            <button type="button" id="addModalClose"
-                class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-toggle="deleteModal">
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path>
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
-            <div class="flex justify-center mt-10">
-                <img src="{{ asset('asset/img/Animation - 1707813219352.gif') }}" class="h-20 w-20" alt="delete">
-            </div>
-            <h4 class="text-center font-normal text-gray-400 mt-4">Doctor Successfully Added!</h4>
-            <div class="flex items-center justify-center">
-                <button class="p-2 bg-blue-600 text-white w-22 flex justify-center mt-5 rounded-md shadow-lg"
-                    id="close_successModalMessage">OK</button>
-            </div>
-        </div>
-    </div>
-
-    {{-- UPDATE SUCCESS --}}
-    <div class="fixed z-50 inset-0 hidden" id="updateSuccess">
-        <div class="fixed inset-0 bg-gray-500 opacity-40" id="update_overlay"></div>
-        <div class="bg-white rounded m-auto fixed inset-0 z-10 " style="max-height:250px; width:500px">
-            <button type="button" id="addModalClose"
-                class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-toggle="deleteModal">
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path>
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
-
-            <div class="flex justify-center mt-10">
-                <img src="{{ asset('asset/img/Animation - 1707813219352.gif') }}" class="h-20 w-20" alt="delete">
-            </div>
-            <h4 class="text-center font-normal text-gray-400 mt-4">Doctor Successfully Added!</h4>
-            <div class="flex items-center justify-center">
-                <button class="p-2 bg-blue-600 text-white w-22 flex justify-center mt-5 rounded-md shadow-lg"
-                    id="close_updateModalMessage">OK</button>
-            </div>
-        </div>
-    </div>
+    <script>
+        function confirmDelete(model, id) {
+            //alert(id);
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If user confirms deletion, send a DELETE request
+                    fetch("{{ route('delete.data', ['model' => ':model', 'id' => ':id']) }}".replace(':model',
+                            model).replace(':id', id), {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            throw new Error('Network response was not ok.');
+                        })
+                        .then(data => {
+                            // Handle response data
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your record has been deleted.",
+                                icon: "success"
+                            }).then(() => {
+                                // Reload the page after the success message is closed
+                                window.location.reload();
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Display error message if needed
+                        });
+                }
+            });
+        }
+    </script>
     <script>
         $(document).ready(function() {
             $('#doctorTable').DataTable();
+
+            showSuccessModal();
+
+            function showSuccessModal() {
+                try {
+                    var urlParams = new URLSearchParams(window.location.search);
+                    if (urlParams.has('success') && urlParams.get('success') === 'true') {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Nurse Successfully Added',
+                            text: 'Added Sucessfully',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                        setTimeout(function() {
+                            // $("#addSuccess").hide();
+                            var newUrl = window.location.href.split('?')[0];
+                            history.replaceState(null, null, newUrl);
+                        }, 4000);
+                    }
+                } catch (error) {
+                    console.error('Error in showSuccessModal:', error);
+                }
+            }
         });
     </script>
 @endsection

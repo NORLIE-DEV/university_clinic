@@ -45,7 +45,7 @@
                 @endphp
                 <div class="mt-10 ml-5">
                     <img class="m-auto"id="image-preview"
-                        style="width:200px; height:180px;"src="{{ $current_doctor->image ? asset('storage/doctor/' . $doctor->image) : $default_profile }}">
+                        style="width:200px; height:180px;"src="{{ $current_doctor->image ? asset('storage/doctor/' . $current_doctor->image) : $default_profile }}">
                 </div>
             </div>
             <div class="p-10" style="width:70%;">

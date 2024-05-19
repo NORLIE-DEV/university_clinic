@@ -6,10 +6,13 @@ use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Auth\Authenticatable as AuthenticatableTrait;
 
 class Doctor extends Model implements Authenticatable
 {
     use HasFactory;
+    use AuthenticatableTrait;
+
     protected $primaryKey = 'id';
     protected $keyType = 'string';
 

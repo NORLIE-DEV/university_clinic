@@ -1,11 +1,11 @@
 @extends('layout.superadmin_layout')
 
 @section('content')
-    @if (session('updateSuccess'))
+    @if (session('updatesuccess'))
         <script>
             Swal.fire({
                 icon: 'success',
-                title: 'Doctor Update Successful',
+                title: 'Superadmin Update Successful',
                 text: 'Sucessfully Update',
                 timer: 2000,
                 showConfirmButton: false
@@ -14,21 +14,19 @@
     @endif
     <div class="bg-white border rounded-2xl shadow-xl m-4 ml-2" style="width:98%; height:auto;">
         <div class="mt-2 items-center w-full p-4 flex justify-between">
-            <h1 class="text-xl font-medium text-gray-600">Doctor List</h1>
-            <a href="/superadmin/doctor/createDoctor" class="bg-blue-900 text-white p-2 text-xs rounded-md font-semibold"><i
-                    class="fa-solid fa-square-pen text-white"></i><span class="ml-2"></span>Add Doctor</a>
+            <h1 class="text-xl font-medium text-gray-600">Super Admin List</h1>
+            <a href="/superadmin/superadmin/addsuperadmin"
+                class="bg-blue-900 text-white p-2 text-xs rounded-md font-semibold"><i
+                    class="fa-solid fa-square-pen text-white"></i><span class="ml-2"></span>Add Supper Admin</a>
         </div>
         <div class="overflow-x-auto bg-white m-4 rounded-md mb-10">
             <!-- Table -->
             <div class="">
-                <table id="doctorTable" class="w-full text-left text-xs whitespace-nowrap p-1 border-collapse">
+                <table id="superadminTable" class="w-full text-left text-xs whitespace-nowrap p-1 border-collapse">
                     <!-- Table head -->
                     <thead
                         class="uppercase tracking-wider bg-gray-700 text-white border-b-2 dark:border-neutral-600 border-t text-xs">
                         <tr>
-                            <th scope="col" class="border p-1  dark:border-neutral-600 border-gray-300 text-center">
-                                DEPARTMENT
-                            </th>
 
                             <th scope="col" class="border dark:border-neutral-600 border-gray-300 text-center">
                                 NAME
@@ -53,45 +51,41 @@
                     </thead>
 
                     <tbody class="text-xs">
-                        @forelse ($doctors as $doctor)
+                        @forelse ($supperadmin_accounts as $account)
                             <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-300">
                                 <th scope="row"
-                                    class="px-2 py-1 border dark:border-neutral-600 border-gray-300 font-extralight text-center">
-                                    {{ $doctor->department }}
-                                </th>
-                                <th scope="row"
                                     class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight text-center">
-                                    {{ $doctor->name }}
+                                    {{ $account->name }}
                                 </th>
 
                                 <th scope="row"
                                     class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight text-center">
-                                    {{ $doctor->phone_number }}
+                                    {{ $account->phonenumber }}
                                 </th>
                                 <th scope="row"
                                     class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight text-center">
-                                    {{ $doctor->email }}
+                                    {{ $account->email }}
                                 </th>
                                 <th scope="row"
                                     class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight text-center">
-                                    {{ $doctor->gender }}
+                                    {{ $account->gender }}
                                 </th>
                                 <th
                                     scope="row"class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight
-                                                                                                                                                                                                                                            @if ($doctor->status === 'active') bg-green-500
-                                                @else bg-red-500 @endif
-                                                                                                                                                                                                                                            text-center text-white">
-                                    {{ $doctor->status }}
+                                                                                                                                                                                                                                                    @if ($account->status === 'active') bg-green-500
+                                            @else bg-red-500 @endif
+                                                                                                                                                                                                                                                    text-center text-white">
+                                    {{ $account->status }}
                                 </th>
 
 
                                 <th scope="row"
                                     class="px-2 py-2 border dark:border-neutral-600 border-gray-300 text-center">
-                                    <a href="/updatedoctor/{{ $doctor->id }}" id="update-doctor">
+                                    <a href="/updatesuperadmin/{{ $account->id }}">
                                         <button
                                             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"><i
                                                 class="fa-solid fa-pen-to-square"></i></button></a>
-                                    <button onclick="confirmDelete('doctor', '{{ $doctor->id }}')"
+                                    <button onclick="confirmDelete('superadmin', '{{ $account->id }}')"
                                         class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs">
                                         <i class="fa-solid fa-trash"></i>
                                     </button>
@@ -111,7 +105,7 @@
     </div>
     <script>
         function confirmDelete(model, id) {
-            //alert(id);
+          //  alert(id);
             Swal.fire({
                 title: "Are you sure?",
                 text: "You won't be able to revert this!",
@@ -157,20 +151,7 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('#doctorTable').DataTable();
-
-            $(document).on("click", "#delete_doctor", function(e) {
-                e.preventDefault();
-                const doctor_id = $(this).val();
-                $("#delete_id").val(doctor_id);
-                $("#deleteModal").removeClass('hidden');
-            });
-
-
-            $("#delete_overlay1, #deleteModalClose1, #cancelDeletemeModal").click(function() {
-                $("#deleteModal").addClass('hidden');
-            });
-
+            $('#superadminTable').DataTable();
 
             showSuccessModal();
 
@@ -180,7 +161,7 @@
                     if (urlParams.has('success') && urlParams.get('success') === 'true') {
                         Swal.fire({
                             icon: 'success',
-                            title: 'Doctor Successfully Added',
+                            title: 'Super Admin Successfully Added',
                             text: 'Added Sucessfully',
                             timer: 2000,
                             showConfirmButton: false

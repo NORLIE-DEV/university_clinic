@@ -35,43 +35,56 @@ Route::get('/', function () {
 Route::get('/patient_login', [AuthController::class, 'patient_login'])->name('login');
 Route::post('/login/process', [AuthController::class, 'login']);
 
+Route::get('/superadmin_login', [AuthController::class, 'superadmin_login'])->name('superadmin.login');
+Route::post('/login/process/superadmin', [AuthController::class, 'login_superadmin']);
+
+Route::middleware(['auth:superadmin'])->group(function () {
+    ///////////////////////////// SUPERADMIN  ///////////////////////////////
+    Route::get('/superadmin', [SuperAdminController::class, 'superadmin_index'])->name('superadmin.index');
+    Route::get('/getMedicalConsultationData', [SuperAdminController::class, 'getMedicalConsultationData']);
+    Route::get('/getDentalConsultationData', [SuperAdminController::class, 'getDentalConsultationData']);
+
+    Route::get('/superadmin/student', [SuperAdminController::class, 'superadmin_student']);
+    Route::get('/superadmin/addstudent', [SuperAdminController::class, 'addStudent']);
+    Route::post('/studentID_available/student', [SuperAdminController::class, 'checkStudentID']);
+    Route::post('/email_available/student', [SuperAdminController::class, 'StudentcheckEmail']);
+    Route::post('/store_student', [SuperAdminController::class, 'store_student']);
+    Route::get('/update_student/{id}', [SuperAdminController::class, "edit_student"]);
+    Route::put('/student/{student}', [SuperAdminController::class, 'update_student']);
+
+    Route::get('/superadmin/employee', [SuperAdminController::class, 'superadmin_employee']);
+    Route::get('/update_employee/{id}', [SuperAdminController::class, "edit_Employee"]);
+    Route::put('/employees/{employee}', [SuperAdminController::class, 'update_employee']);
+
+    Route::get('/superadmin/patient', [SuperAdminController::class, 'superadmin_patient']);
+    Route::get('/superadmin/patient/student', [SuperAdminController::class, 'student_patient']);
+    Route::get('/superadmin/patient/employee', [SuperAdminController::class, 'employee_patient']);
+    Route::post('/superadmin/patient_import_data', [SuperAdminController::class, 'importData']);
 
 
-///////////////////////////// SUPERADMIN  ///////////////////////////////
-Route::get('/superadmin', [SuperAdminController::class, 'superadmin_index']);
-Route::get('/getMedicalConsultationData', [SuperAdminController::class, 'getMedicalConsultationData']);
-Route::get('/getDentalConsultationData', [SuperAdminController::class, 'getDentalConsultationData']);
+    Route::get('/superadmin/doctor', [SuperAdminController::class, 'superadmin_doctor']);
+    Route::get('/superadmin/doctor/createDoctor', [SuperAdminController::class, 'add_doctor']);
+    Route::post('/email_available/doctor', [SuperAdminController::class, 'checkEmail']);
+    Route::post('/store_doctor', [SuperAdminController::class, 'store']);
+    Route::get('/updatedoctor/{id}', [SuperAdminController::class, "updatedoctor"]);
+    Route::put('/doctor/{doctor}', [SuperAdminController::class, 'update']);
+    Route::delete('/delete/{model}/{id}', [SuperAdminController::class, 'destroy'])->name('delete.data');
 
-Route::get('/superadmin/student', [SuperAdminController::class, 'superadmin_student']);
-Route::get('/superadmin/addstudent', [SuperAdminController::class, 'addStudent']);
-Route::post('/studentID_available/student', [SuperAdminController::class, 'checkStudentID']);
-Route::post('/email_available/student', [SuperAdminController::class, 'StudentcheckEmail']);
-Route::post('/store_student', [SuperAdminController::class, 'store_student']);
-Route::get('/update_student/{id}', [SuperAdminController::class, "edit_student"]);
-Route::put('/student/{student}', [SuperAdminController::class, 'update_student']);
+    Route::get('/superadmin/nurse', [SuperAdminController::class, 'nurse']);
+    Route::get('/superadmin/nurse/createNurse', [SuperAdminController::class, 'createNurse']);
+    Route::get('/updatednurse/{id}', [SuperAdminController::class, "edit_nurse"]);
+    Route::put('/nurse/{nurse}', [SuperAdminController::class, 'update_nurse']);
+    Route::post('/store_nurse', [SuperAdminController::class, 'store_nurse']);
 
-Route::get('/superadmin/employee', [SuperAdminController::class, 'superadmin_employee']);
+    Route::get('/superadmin/manageaccounts', [SuperAdminController::class, 'superadmin_accounts']);
+    Route::get('/superadmin/superadmin/addsuperadmin', [SuperAdminController::class, 'createSuperadmin']);
+    Route::post('/store_superadmin', [SuperAdminController::class, 'store_superadmin']);
+    Route::get('/updatesuperadmin/{id}', [SuperAdminController::class, "edit_superadmin"]);
+    Route::put('/superadmin/{superadmin}', [SuperAdminController::class, 'update_superadmin']);
 
-Route::get('/superadmin/patient', [SuperAdminController::class, 'superadmin_patient']);
-Route::get('/superadmin/patient/student', [SuperAdminController::class, 'student_patient']);
-Route::get('/superadmin/patient/employee', [SuperAdminController::class, 'employee_patient']);
-Route::post('/superadmin/patient_import_data', [SuperAdminController::class, 'importData']);
-
-
-Route::get('/superadmin/doctor', [SuperAdminController::class, 'superadmin_doctor']);
-Route::get('/superadmin/doctor/createDoctor', [SuperAdminController::class, 'add_doctor']);
-Route::post('/email_available/doctor', [SuperAdminController::class, 'checkEmail']);
-Route::post('/store_doctor', [SuperAdminController::class, 'store']);
-Route::get('/updatedoctor/{id}', [SuperAdminController::class, "updatedoctor"]);
-Route::put('/doctor/{doctor}', [SuperAdminController::class, 'update']);
-Route::delete('/delete/{model}/{id}', [SuperAdminController::class, 'destroy']);
-
-Route::get('/superadmin/nurse', [SuperAdminController::class, 'nurse']);
-Route::get('/superadmin/nurse/createNurse', [SuperAdminController::class, 'createNurse']);
-Route::post('/store_nurse', [SuperAdminController::class, 'store_nurse']);
-
-Route::post('/import-excel/student', [ExcelImportController::class, 'import_student']);
-Route::post('/import-excel/employee', [ExcelImportController::class, 'import_employee']);
+    Route::post('/import-excel/student', [ExcelImportController::class, 'import_student']);
+    Route::post('/import-excel/employee', [ExcelImportController::class, 'import_employee']);
+});
 
 
 
@@ -180,9 +193,9 @@ Route::middleware(['auth:doctor'])->group(function () {
     // update patient consultation walkin
     Route::get('/update_medicalconsultation_walkin/{id}', [DoctorController::class, 'UpdatepatientWalkinTest']);
     Route::get('/update_dentalconsultation_walkin/{id}', [DoctorController::class, 'UpdatepatientWalkinTestDental']);
-   // Route::put('/update_medicalconsultation_walkin/{id}', [DoctorController::class, 'update_medical_consultation']);
+    // Route::put('/update_medicalconsultation_walkin/{id}', [DoctorController::class, 'update_medical_consultation']);
 
-   Route::put('/update_dentalconsultation/{id}', [DoctorController::class, 'update_dental_consultation']);
+    Route::put('/update_dentalconsultation/{id}', [DoctorController::class, 'update_dental_consultation']);
 
     //store consulation appointment
     Route::post('/store_medicalConsultaion', [DoctorController::class, 'store_medical_consultation']);

@@ -1,38 +1,123 @@
 @extends('layout.superadmin_layout')
 
 @section('content')
-    <div class=" shadow-lg  mt-2 flex items-center justify-between bg-blue-950 gap-2 rounded-sm p-3 overflow-x-hidden"
+    <div class=" bg-white shadow-sm mt-2 flex items-center justify-between gap-2 rounded-sm p-3 overflow-x-hidden"
         style="width: 100%">
         <div class="ml-2">
-            <h1 class="font-bold text-white"><i class="fa-solid fa-graduation-cap"></i><span class="ml-2"></span>STUDENT</h1>
+            <h1 class="text-xl text-gray-500"><i class="fa-solid fa-graduation-cap"></i><span class="ml-2"></span>STUDENT
+            </h1>
         </div>
         <form action="/import-excel/student" method="POST" enctype="multipart/form-data" class="flex">
             @csrf
             <div class="flex justify-end w-full">
-                <div>
-                    <label for="file" class="text-white text-xs">Import File</label>
-                    <input type="file"name="file" id="file" class="text-white text-xs">
-                    <button type="submit" class=" bg-blue-600 text-white rounded-lg text-xs p-2 ">Import</button>
+                <div class="border p-2 bg-gray-200">
+                    <input type="file"name="file" id="file" class="text-blue-600 text-xs w-72 inputfile">
+                    <button type="submit" class=" bg-blue-600 text-white text-xs p-2 ">Import</button>
                 </div>
             </div>
+            <style>
+                input[type="file"] {
+                    position: relative;
+                }
+
+                input[type="file"]::file-selector-button {
+                    width: 136px;
+                    color: transparent;
+                }
+
+                input[type="file"]::before {
+                    position: absolute;
+                    pointer-events: none;
+                    top: 10px;
+                    left: 16px;
+                    height: 20px;
+                    width: 20px;
+                    content: "";
+                    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%230964B0'%3E%3Cpath d='M18 15v3H6v-3H4v3c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-3h-2zM7 9l1.41 1.41L11 7.83V16h2V7.83l2.59 2.58L17 9l-5-5-5 5z'/%3E%3C/svg%3E");
+                }
+
+                input[type="file"]::after {
+                    position: absolute;
+                    pointer-events: none;
+                    top: 11px;
+                    left: 40px;
+                    color: #0964b0;
+                    content: "Upload File";
+                }
+
+                input[type="file"]::file-selector-button {
+                    border-radius: 4px;
+                    padding: 0 16px;
+                    height: 40px;
+                    cursor: pointer;
+                    background-color: white;
+                    border: 1px solid rgba(0, 0, 0, 0.16);
+                    box-shadow: 0px 1px 0px rgba(0, 0, 0, 0.05);
+                    margin-right: 16px;
+                    transition: background-color 200ms;
+                }
+
+                input[type="file"]::file-selector-button:hover {
+                    background-color: #f3f4f6;
+                }
+
+                input[type="file"]::file-selector-button:active {
+                    background-color: #e5e7eb;
+                }
+            </style>
         </form>
     </div>
 
-    <div class="flex items-center justify-between mr-10" style="">
+    {{-- <div class="flex items-center justify-between mr-10" style="">
         <h1 class="p-5 mt-5 text-2xl font-bold text-blue-950">Student List</h1>
         <div>
             <a href="/superadmin/addstudent" class="bg-blue-950 rounded p-2.5 text-xs shadow font-mono text-white mr-5"><i
                     class="fa-solid fa-graduation-cap"></i><span class="ml-2"></span>Add Student</a>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Table responsive wrapper -->
+
+    @if (session('updateSuccess'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Update Successful',
+                text: 'The student information has been updated successfully!',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+    @if (session('success'))
+        <script>
+            Swal.fire({
+                icon: 'success',
+                title: 'Import Successful',
+                text: 'Success Data Imported',
+                timer: 2000,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
+    @if (session('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Upload Unsuccessfull',
+                text: 'The Student information has not successfully uploaded',
+                timer: 2000,
+                showConfirmButton: true
+            });
+        </script>
+    @endif
     <div class="overflow-x-auto bg-white shadow-xl rounded-md mb-10 m-5 p-5">
         <!-- Table -->
         <div class="text-xs">
             <table id="studentTable" class=" text-left text-xs whitespace-nowrap border-collapse p-2">
                 <!-- Table head -->
-                <thead class="uppercase tracking-wider border-b-2 p-2 dark:border-neutral-600 border-t text-xs">
+                <thead
+                    class="uppercase tracking-wider border-b-2 p-2 bg-gray-700 text-white dark:border-neutral-600 border-t text-xs">
                     <tr>
                         <th scope="col" class="border p-3  dark:border-neutral-600 border-gray-300 text-center ">
                             STUDENT ID
@@ -104,9 +189,9 @@
                             </th>
                             <th
                                 scope="row"class="px-2 py-2 border dark:border-neutral-600 border-gray-300 font-extralight
-                                                                                                                                                                                                        @if ($student->status === 'active' || $student->status === 'Active') bg-green-500
+                                                                                                                                                                                                                                                                                    @if ($student->status === 'active' || $student->status === 'Active') bg-green-500
                                         @else bg-red-500 @endif
-                                                                                                                                                                                                        text-center text-white">
+                                                                                                                                                                                                                                                                                    text-center text-white">
                                 {{ $student->status }}
                             </th>
 
@@ -115,10 +200,10 @@
                                     <button
                                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"><i
                                             class="fa-solid fa-pen-to-square"></i></button></a>
-                                <button
-                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs"
-                                    id="delete_student" value="{{ $student->id }}"><i
-                                        class="fa-solid fa-trash"></i></button>
+                                <button onclick="confirmDelete('student', {{ $student->id }})"
+                                    class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-2 rounded mr-2 text-xs">
+                                    <i class="fa-solid fa-trash"></i>
+                                </button>
 
                             </th>
                         </tr>
@@ -133,92 +218,57 @@
             </table>
         </div>
     </div>
-    {{-- ADD SUCCESS --}}
-    <div class="fixed z-50 inset-0 hidden" id="addSuccess">
-        <div class="fixed inset-0 bg-gray-500 opacity-40" id="add_overlay"></div>
-        <div class="bg-white rounded m-auto fixed inset-0 z-10 " style="max-height:250px; width:500px">
-            <button type="button" id="addModalClose"
-                class="text-gray-400 absolute top-2.5 right-2.5 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white"
-                data-modal-toggle="deleteModal">
-                <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path fill-rule="evenodd"
-                        d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                        clip-rule="evenodd"></path>
-                </svg>
-                <span class="sr-only">Close modal</span>
-            </button>
-            <div class="flex justify-center mt-10">
-                <img src="{{ asset('asset/img/Animation - 1707813219352.gif') }}" class="h-20 w-20" alt="delete">
-            </div>
-            <h4 class="text-center font-normal text-gray-400 mt-4">Student Successfully Added!</h4>
-            <div class="flex items-center justify-center">
-                <button class="p-2 bg-blue-600 text-white w-22 flex justify-center mt-5 rounded-md shadow-lg"
-                    id="close_successModalMessage">OK</button>
-            </div>
-        </div>
-    </div>
 
-    @include('super_admin.student.modal.delete_student')
+    <script>
+        function confirmDelete(model, id) {
+            Swal.fire({
+                title: "Are you sure?",
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Yes, delete it!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // If user confirms deletion, send a DELETE request
+                    fetch("{{ route('delete.data', ['model' => ':model', 'id' => ':id']) }}".replace(':model',
+                            model).replace(':id', id), {
+                            method: 'DELETE',
+                            headers: {
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            }
+                        })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json();
+                            }
+                            throw new Error('Network response was not ok.');
+                        })
+                        .then(data => {
+                            // Handle response data
+                            Swal.fire({
+                                title: "Deleted!",
+                                text: "Your record has been deleted.",
+                                icon: "success"
+                            }).then(() => {
+                                // Reload the page after the success message is closed
+                                window.location.reload();
+                            });
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            // Display error message if needed
+                        });
+                }
+            });
+        }
+    </script>
+
     <script>
         $(document).ready(function() {
             $('#studentTable').DataTable();
 
-            showSuccessModal();
-
-            function showSuccessModal() {
-                try {
-                    var urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.has('success') && urlParams.get('success') === 'true') {
-                        $("#addSuccess").show();
-                        setTimeout(function() {
-                            $("#addSuccess").hide();
-                            var newUrl = window.location.href.split('?')[0];
-                            history.replaceState(null, null, newUrl);
-                        }, 4000);
-                    }
-                } catch (error) {
-                    console.error('Error in showSuccessModal:', error);
-                }
-            }
-
-            //delete
-            $(document).on("click", "#delete_student", function(e) {
-                e.preventDefault();
-                const student_id = $(this).val();
-                $("#delete_id").val(student_id);
-                $("#deleteModal").removeClass('hidden');
-            });
-
-
-            $("#delete_overlay1, #deleteModalClose1, #cancelDeletemeModal").click(function() {
-                $("#deleteModal").addClass('hidden');
-            });
-
-
-            showSuccessModal();
-
-            function showSuccessModal() {
-                try {
-                    var urlParams = new URLSearchParams(window.location.search);
-                    if (urlParams.has('success') && urlParams.get('success') === 'true') {
-                        $("#addSuccess").show();
-                        setTimeout(function() {
-                            $("#addSuccess").hide();
-                            var newUrl = window.location.href.split('?')[0];
-                            history.replaceState(null, null, newUrl);
-                        }, 4000);
-                    }
-                } catch (error) {
-                    console.error('Error in showSuccessModal:', error);
-                }
-            }
-
-            $("#close_successModalMessage").click(function() {
-                $("#addSuccess").hide();
-                var newUrl = window.location.href.split('?')[0];
-                history.replaceState(null, null, newUrl);
-            });
         })
     </script>
 @endsection

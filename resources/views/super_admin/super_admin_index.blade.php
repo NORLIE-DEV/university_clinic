@@ -181,7 +181,7 @@
 
              $('#selectedDateDental').on('change', function() {
                  var selectedDate = $(this).val();
-                 alert(selectedDate);
+
                  $.ajax({
                      method: 'get',
                      url: '/getDentalConsultationData',
@@ -190,7 +190,7 @@
                      },
 
                      success: function(response) {
-                         alert(2);
+
                          updateHistogramDental(response);
                      },
                      error: function(xhr, status, error) {
